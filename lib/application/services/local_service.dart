@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter_application/data/dtos/authentication_dto.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,11 +13,20 @@ class LocalService {
     return _sharedPref.containsKey(keyAuth);
   }
 
-  void saveAuth({bool isAuth = false}) {
-    if (isAuth) {
-      _sharedPref.setBool(keyAuth, isAuth);
+  Future saveAuth({required AuthenticationDto? auth}) async {
+    if (auth != null) {
+      await _sharedPref.setString(keyAuth, jsonEncode(auth.toJson()));
     } else {
       _sharedPref.clear();
+    }
+  }
+
+  AuthenticationDto? getAuthenticationDto() {
+    if (_sharedPref.containsKey(keyAuth)) {
+      final authData = jsonDecode(_sharedPref.getString(keyAuth) ?? '');
+      return AuthenticationDto.fromJson(authData);
+    } else {
+      return null;
     }
   }
 }

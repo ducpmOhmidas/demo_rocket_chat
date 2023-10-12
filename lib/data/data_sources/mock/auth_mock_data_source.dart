@@ -15,7 +15,7 @@ class AuthMockDataSource extends AuthMockRepository {
 
   @override
   Future<ProfileModel> profile() async {
-    return ProfileDto('duc');
+    return ProfileDto('duc', 'email', 'id');
   }
 
   @override

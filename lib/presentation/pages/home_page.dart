@@ -5,6 +5,7 @@ import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navi
 import 'package:flutter_application/presentation/blocs/home/home_bloc.dart';
 import 'package:flutter_application/presentation/blocs/home/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rocket_chat_embeddedchat_component/rocket_chat_embeddedchat_component.dart';
 
 class HomePage extends StatefulWidget {
   static const path = 'HomePage';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 32,
                   ),
-                  Text('Helu ${profile.userName}'),
+                  Text('Helu ${profile.name}'),
                   const SizedBox(
                     height: 16,
                   ),

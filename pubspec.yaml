@@ -29,6 +29,8 @@ dependencies:
   freezed_annotation:
   # JsonParser
   json_annotation:
+  # Http Client
+  dio:
 
   # Simple direct Service Locator
   get_it:
@@ -40,6 +42,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  rocket_chat_embeddedchat_component:
+    path: packages/rocket_chat_embeddedchat_component
+  rocket_chat_api:
+    path: packages/rocket_chat_api
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -47,6 +54,8 @@ dev_dependencies:
   flutter_gen_runner:
   json_serializable:
   freezed:
+
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

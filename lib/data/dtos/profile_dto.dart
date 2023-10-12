@@ -9,8 +9,15 @@ class ProfileDto extends ProfileModel {
 
   Map<String, dynamic> toJson() => _$ProfileDtoToJson(this);
 
-  @override
-  String userName;
+  ProfileDto(this.name, this.email, this.id);
 
-  ProfileDto(this.userName);
+  @override
+  String name;
+
+  @override
+  String? email;
+
+  @override
+  @JsonKey(name: '_id')
+  String id;
 }
