@@ -8,13 +8,17 @@ part of 'profile_dto.dart';
 
 ProfileDto _$ProfileDtoFromJson(Map<String, dynamic> json) => ProfileDto(
       json['name'] as String,
-      json['email'] as String?,
-      json['id'] as String,
-    );
+      json['_id'] as String,
+    )
+      ..email = json['email'] as String?
+      ..emails = (json['emails'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList();
 
 Map<String, dynamic> _$ProfileDtoToJson(ProfileDto instance) =>
     <String, dynamic>{
       'name': instance.name,
       'email': instance.email,
-      'id': instance.id,
+      'emails': instance.emails,
+      '_id': instance.id,
     };

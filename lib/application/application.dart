@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/application/services/local_service.dart';
 import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navigation_bloc.dart';
 import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navigation_state.dart';
-import 'package:flutter_application/presentation/pages/navigator/auth_navigator.dart';
-import 'package:flutter_application/presentation/pages/navigator/main_navigator.dart';
-import 'package:flutter_application/presentation/pages/splash_page.dart';
+import 'package:flutter_application/presentation/navigator/auth_navigator.dart';
+import 'package:flutter_application/presentation/navigator/main_navigator.dart';
+import 'package:flutter_application/presentation/pages/splash/splash_page.dart';
+import 'package:flutter_application/themes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class Application extends StatefulWidget {
   static const path = 'Application';
+
   const Application({Key? key}) : super(key: key);
 
   @override
@@ -25,6 +27,8 @@ class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: light(context),
+      darkTheme: dark(context),
       home: BlocBuilder<AuthNavigationBloc, AuthNavigationState>(
         bloc: context.read<AuthNavigationBloc>(),
         builder: (context, state) {

@@ -1,10 +1,11 @@
 import 'package:flutter_application/application/services/local_service.dart';
-import 'package:flutter_application/data/repositories/auth/auth_api_repository.dart';
-import 'package:flutter_application/data/repositories/auth/auth_local_reposirory.dart';
-import 'package:flutter_application/data/repositories/auth/auth_mock_repository.dart';
-import 'package:flutter_application/domain/models/authentication_model.dart';
-import 'package:flutter_application/domain/models/profile_model.dart';
+import 'package:flutter_application/domain/entities/authentication_entity.dart';
+import 'package:flutter_application/domain/entities/profile_entity.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../domain/repositories/auth/auth_api_repository.dart';
+import '../../domain/repositories/auth/auth_local_reposirory.dart';
+import '../../domain/repositories/auth/auth_mock_repository.dart';
 
 class AuthService {
   AuthService(
@@ -19,16 +20,16 @@ class AuthService {
 
   final _localService = GetIt.instance.get<LocalService>();
 
-  Future<AuthenticationModel> login(String userName, String passWord) {
-    return authMockRepository.login(userName, passWord);
+  Future<AuthenticationEntity> login(String userName, String passWord) {
+    return authApiRepository.login(userName, passWord);
   }
 
   Future logout() {
     return authMockRepository.logout();
   }
 
-  Future<ProfileModel> profile() {
-    return authMockRepository.profile();
+  Future<ProfileEntity> profile({required String userId}) {
+    return authApiRepository.profile(userId: userId);
   }
 
   Future<String> defaultData() {

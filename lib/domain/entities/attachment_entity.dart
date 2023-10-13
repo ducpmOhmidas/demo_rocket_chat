@@ -1,4 +1,4 @@
-abstract class AttachmentModel {
+abstract class AttachmentEntity {
   int? id;
   String? title;
   String? titleLink;

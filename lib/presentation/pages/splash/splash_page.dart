@@ -8,6 +8,7 @@ typedef InitializeApp = Future<AuthNavigationState> Function(
 
 class SplashPage extends StatefulWidget {
   static const path = '/splash_page';
+
   const SplashPage({Key? key, required this.initializeApp}) : super(key: key);
   final InitializeApp initializeApp;
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/presentation/pages/login_page.dart';
+import 'package:flutter_application/presentation/pages/login/login_page.dart';
 import 'package:flutter_application/utils/navigator_support.dart';
 
 class AuthNavigator extends StatefulWidget {
   static const path = '/auth_navigator';
+
   const AuthNavigator({Key? key}) : super(key: key);
 
   @override

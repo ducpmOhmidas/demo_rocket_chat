@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter_application/data/dtos/authentication_dto.dart';
-import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../initialize_dependencies.dart';
 
 class LocalService {
   final String keyAuth = 'key_auth';
 
-  final _sharedPref = GetIt.instance.get<SharedPreferences>();
+  final _sharedPref = sl.get<SharedPreferences>();
 
   bool isAuthorized() {
     return _sharedPref.containsKey(keyAuth);

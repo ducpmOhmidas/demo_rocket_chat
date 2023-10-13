@@ -1,11 +1,12 @@
-import 'package:flutter_application/domain/models/attachment_model.dart';
+import 'package:flutter_application/domain/entities/attachment_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'attachment_dto.g.dart';
 
 @JsonSerializable()
-class AttachmentDto extends AttachmentModel {
-
-  factory AttachmentDto.fromJson(Map<String, dynamic> json) => _$AttachmentDtoFromJson(json);
+class AttachmentDto extends AttachmentEntity {
+  factory AttachmentDto.fromJson(Map<String, dynamic> json) =>
+      _$AttachmentDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$AttachmentDtoToJson(this);
 

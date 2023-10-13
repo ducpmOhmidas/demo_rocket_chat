@@ -7,24 +7,25 @@ part of 'message_dto.dart';
 // **************************************************************************
 
 MessageDto _$MessageDtoFromJson(Map<String, dynamic> json) => MessageDto(
-      json['id'] as String,
+      json['_id'] as String,
       json['rid'] as String,
       (json['mentions'] as List<dynamic>?)
-          ?.map((e) => ProfileDto.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e as Map<String, dynamic>)
           .toList(),
       json['msg'] as String?,
-    )
-      ..updatedAt = json['updatedAt'] as String?
-      ..userInfor = json['userInfor'] == null
-          ? null
-          : ProfileDto.fromJson(json['userInfor'] as Map<String, dynamic>);
+      json['u'] as Map<String, dynamic>?,
+      (json['attachments'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList(),
+    )..updatedAt = json['_updatedAt'] as String?;
 
 Map<String, dynamic> _$MessageDtoToJson(MessageDto instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'rid': instance.rid,
-      'mentions': instance.mentions,
+      'mentions': instance.mentionsRM,
       'msg': instance.msg,
-      'updatedAt': instance.updatedAt,
-      'userInfor': instance.userInfor,
+      '_updatedAt': instance.updatedAt,
+      'u': instance.userInforRM,
+      'attachments': instance.attachmentsRM,
     };

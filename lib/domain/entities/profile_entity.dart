@@ -1,5 +1,7 @@
-abstract class ProfileModel {
+abstract class ProfileEntity {
   String get id;
+
   String get name;
+
   String? email;
 }

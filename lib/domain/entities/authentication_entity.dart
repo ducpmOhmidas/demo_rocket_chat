@@ -1,6 +1,9 @@
 import 'package:flutter_application/oauth2_interceptor.dart';
 
-abstract class AuthenticationModel with OAuthInfoMixin {
+abstract class AuthenticationEntity with OAuthInfoMixin {
   String get accessToken;
+
   String get refreshToken;
+
+  String get userId;
 }

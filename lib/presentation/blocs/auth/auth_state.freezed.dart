@@ -18,29 +18,32 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(ProfileModel profileModel) authorized,
+    required TResult Function(ProfileEntity profileModel) authorized,
     required TResult Function() unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ProfileModel profileModel)? authorized,
+    TResult? Function(ProfileEntity profileModel)? authorized,
     TResult? Function()? unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ProfileModel profileModel)? authorized,
+    TResult Function(ProfileEntity profileModel)? authorized,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateAuthorized value) authorized,
     required TResult Function(AuthStateUnAuthorized value) unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthStateAuthorized value)? authorized,
@@ -67,9 +70,9 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     implements $AuthStateCopyWith<$Res> {
   _$AuthStateCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
+// ignore: unused_field
   final $Val _value;
-  // ignore: unused_field
+// ignore: unused_field
   final $Res Function($Val) _then;
 }
 
@@ -79,7 +82,7 @@ abstract class _$$AuthStateAuthorizedCopyWith<$Res> {
           $Res Function(_$AuthStateAuthorized) then) =
       __$$AuthStateAuthorizedCopyWithImpl<$Res>;
   @useResult
-  $Res call({ProfileModel profileModel});
+  $Res call({ProfileEntity profileModel});
 }
 
 /// @nodoc
@@ -99,7 +102,7 @@ class __$$AuthStateAuthorizedCopyWithImpl<$Res>
       null == profileModel
           ? _value.profileModel
           : profileModel // ignore: cast_nullable_to_non_nullable
-              as ProfileModel,
+              as ProfileEntity,
     ));
   }
 }
@@ -110,7 +113,7 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
   const _$AuthStateAuthorized(this.profileModel);
 
   @override
-  final ProfileModel profileModel;
+  final ProfileEntity profileModel;
 
   @override
   String toString() {
@@ -139,7 +142,7 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(ProfileModel profileModel) authorized,
+    required TResult Function(ProfileEntity profileModel) authorized,
     required TResult Function() unAuthorized,
   }) {
     return authorized(profileModel);
@@ -148,7 +151,7 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ProfileModel profileModel)? authorized,
+    TResult? Function(ProfileEntity profileModel)? authorized,
     TResult? Function()? unAuthorized,
   }) {
     return authorized?.call(profileModel);
@@ -157,7 +160,7 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ProfileModel profileModel)? authorized,
+    TResult Function(ProfileEntity profileModel)? authorized,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
@@ -200,10 +203,10 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
 }
 
 abstract class AuthStateAuthorized implements AuthState {
-  const factory AuthStateAuthorized(final ProfileModel profileModel) =
+  const factory AuthStateAuthorized(final ProfileEntity profileModel) =
       _$AuthStateAuthorized;
 
-  ProfileModel get profileModel;
+  ProfileEntity get profileModel;
   @JsonKey(ignore: true)
   _$$AuthStateAuthorizedCopyWith<_$AuthStateAuthorized> get copyWith =>
       throw _privateConstructorUsedError;
@@ -247,7 +250,7 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(ProfileModel profileModel) authorized,
+    required TResult Function(ProfileEntity profileModel) authorized,
     required TResult Function() unAuthorized,
   }) {
     return unAuthorized();
@@ -256,7 +259,7 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(ProfileModel profileModel)? authorized,
+    TResult? Function(ProfileEntity profileModel)? authorized,
     TResult? Function()? unAuthorized,
   }) {
     return unAuthorized?.call();
@@ -265,7 +268,7 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(ProfileModel profileModel)? authorized,
+    TResult Function(ProfileEntity profileModel)? authorized,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {

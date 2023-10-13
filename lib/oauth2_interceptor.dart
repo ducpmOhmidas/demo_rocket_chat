@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -27,7 +28,7 @@ class Oauth2Interceptor extends QueuedInterceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.headers.putIfAbsent('Authorization',
-            () => 'Bearer ${tokenProvider.currentValue?.accessToken}');
+        () => 'Bearer ${tokenProvider.currentValue?.accessToken}');
     handler.next(options);
   }
 
@@ -38,9 +39,10 @@ class Oauth2Interceptor extends QueuedInterceptor {
       developer.log('onError 401 [$error]', name: TAG);
       RequestOptions options = error.response!.requestOptions;
       if ('Bearer ${tokenProvider.currentValue?.accessToken}' !=
-          options.headers["Authorization"]) {
-        options.headers["Authorization"] =
-        'Bearer ${tokenProvider.currentValue?.accessToken}';
+          options.headers["X-Auth-Token"]) {
+        options.headers["X-Auth-Token"] =
+            '${tokenProvider.currentValue?.accessToken}';
+        options.headers["X-User-Id"] = '${tokenProvider.currentValue?.userId}';
         dio.fetch(options).then((value) {
           handler.resolve(value);
         }, onError: (error) {
@@ -58,7 +60,7 @@ class Oauth2Interceptor extends QueuedInterceptor {
       }).then((value) {
         tokenProvider.add(parserJson(value.data));
         options.headers["Authorization"] =
-        'Bearer ${tokenProvider.currentValue?.accessToken}';
+            'Bearer ${tokenProvider.currentValue?.accessToken}';
       }, onError: (error) {
         tokenProvider.add(null);
         handler.reject(error);
@@ -114,4 +116,6 @@ mixin OAuthInfoMixin {
   get accessToken;
 
   get refreshToken;
+
+  get userId;
 }

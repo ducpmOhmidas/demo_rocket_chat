@@ -1,21 +1,30 @@
+import 'package:flutter_application/domain/entities/profile_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:flutter_application/domain/models/profile_model.dart';
+
 part 'profile_dto.g.dart';
 
 @JsonSerializable()
-class ProfileDto extends ProfileModel {
+class ProfileDto extends ProfileEntity {
   factory ProfileDto.fromJson(Map<String, dynamic> json) =>
       _$ProfileDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileDtoToJson(this);
 
-  ProfileDto(this.name, this.email, this.id);
+  ProfileDto(this.name, this.id);
 
   @override
   String name;
 
   @override
-  String? email;
+  String? get email {
+    if (emails != null && emails!.isNotEmpty) {
+      return emails!.first['address'];
+    } else {
+      return null;
+    }
+  }
+
+  List<Map<String, dynamic>>? emails;
 
   @override
   @JsonKey(name: '_id')

@@ -19,9 +19,10 @@ class AuthBloc extends Cubit<AuthState> {
 
   Future login(String userName, String passWord) async {
     final auth = await authService.login(userName, passWord);
-    final profile = await authService.profile();
+    final profile = await authService.profile(userId: auth.userId);
     Cache.profile = profile;
-    // localService.saveAuth(auth: AuthenticationDto(accessToken, refreshToken));
+    localService.saveAuth(
+        auth: AuthenticationDto(auth.accessToken, auth.userId));
     emit(AuthState.authorized(profile));
     authNavigationBloc.setState(AuthNavigationState.authorized());
   }
@@ -34,7 +35,8 @@ class AuthBloc extends Cubit<AuthState> {
   }
 
   Future initializeApp() async {
-    final profile = await authService.profile();
+    final auth = localService.getAuthenticationDto();
+    final profile = await authService.profile(userId: auth!.userId);
     Cache.profile = profile;
     emit(AuthState.authorized(profile));
   }

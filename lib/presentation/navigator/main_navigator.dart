@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/presentation/blocs/home/home_bloc.dart';
-import 'package:flutter_application/presentation/pages/home_page.dart';
+import 'package:flutter_application/presentation/pages/home/home_page.dart';
 import 'package:flutter_application/utils/navigator_support.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainNavigator extends StatefulWidget {
   static const path = '/main_navigator';
+
   const MainNavigator({Key? key}) : super(key: key);
 
   @override

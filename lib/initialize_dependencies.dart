@@ -1,45 +1,46 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_application/application/services/auth_service.dart';
 import 'package:flutter_application/application/services/local_service.dart';
-import 'package:flutter_application/data/data_sources/local/auth_local_data_source.dart';
-import 'package:flutter_application/data/data_sources/mock/auth_mock_data_source.dart';
-import 'package:flutter_application/data/data_sources/remote/auth_api_data_source.dart';
+import 'package:flutter_application/data/impl_repositories/auth/auth_local_repository_impl.dart';
+import 'package:flutter_application/data/impl_repositories/auth/auth_mock_repository_impl.dart';
+import 'package:flutter_application/domain/repositories/auth/auth_api_repository.dart';
+import 'package:flutter_application/domain/repositories/auth/auth_local_reposirory.dart';
+import 'package:flutter_application/domain/repositories/auth/auth_mock_repository.dart';
 import 'package:flutter_application/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navigation_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/dtos/authentication_dto.dart';
+import 'data/impl_repositories/auth/auth_api_repository_impl.dart';
 import 'oauth2_interceptor.dart';
 
-const baseUrl = 'https://chat.ohmidasvn.dev/api/v1';
+final sl = GetIt.I;
 
 Future initializeDependencies() async {
-  Dio dio = Dio(BaseOptions(
-    baseUrl: baseUrl
-  ));
-  GetIt.instance.registerSingleton(await SharedPreferences.getInstance());
+  final baseUrl = dotenv.get('BASE_URL');
+  Dio dio = Dio(BaseOptions(baseUrl: baseUrl))
+    ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
-  GetIt.instance.registerSingleton(AuthNavigationBloc());
-  GetIt.instance.registerSingleton(LocalService());
-  GetIt.instance.registerSingleton(AuthService(
-      AuthMockDataSource(), AuthLocalDataSource(), AuthApiDataSource()));
-  GetIt.instance.registerSingleton(AuthBloc());
+  final _sharedPres = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => _sharedPres);
+
+  sl.registerLazySingleton(() => LocalService());
 
   Oauth2Manager<AuthenticationDto> oauth2manager =
       Oauth2Manager<AuthenticationDto>(
-          currentValue:
-              GetIt.instance.get<LocalService>().getAuthenticationDto(),
+          currentValue: sl.get<LocalService>().getAuthenticationDto(),
           onSave: (value) {
             if (value == null) {
-              GetIt.instance.get<LocalService>().saveAuth(auth: null);
+              sl.get<LocalService>().saveAuth(auth: null);
             } else {
-              GetIt.instance.get<LocalService>().saveAuth(auth: value);
+              sl.get<LocalService>().saveAuth(auth: value);
             }
           });
 
-  GetIt.instance
-      .registerSingleton<Oauth2Manager<AuthenticationDto>>(oauth2manager);
+  sl.registerLazySingleton<Oauth2Manager<AuthenticationDto>>(
+      () => oauth2manager);
 
   dio.interceptors.add(
     Oauth2Interceptor(
@@ -52,4 +53,15 @@ Future initializeDependencies() async {
       tokenProvider: oauth2manager,
     ),
   );
+
+  sl.registerLazySingleton(() => dio);
+
+  sl.registerLazySingleton<AuthApiRepository>(() => AuthApiRepositoryImpl());
+  sl.registerLazySingleton<AuthLocalRepository>(
+      () => AuthLocalRepositoryImpl());
+  sl.registerLazySingleton<AuthMockRepository>(() => AuthMockRepositoryImpl());
+
+  sl.registerLazySingleton(() => AuthNavigationBloc());
+  sl.registerLazySingleton(() => AuthService(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => AuthBloc());
 }

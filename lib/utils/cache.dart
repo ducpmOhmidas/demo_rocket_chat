@@ -1,5 +1,5 @@
-import 'package:flutter_application/domain/models/profile_model.dart';
+import 'package:flutter_application/domain/entities/profile_entity.dart';
 
 class Cache {
-  static ProfileModel? profile;
+  static ProfileEntity? profile;
 }
