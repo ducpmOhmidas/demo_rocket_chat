@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer' as developer;
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -27,18 +28,22 @@ class Oauth2Interceptor extends QueuedInterceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers.putIfAbsent('Authorization',
-        () => 'Bearer ${tokenProvider.currentValue?.accessToken}');
+    log('onRequest: ${options.headers}');
+    options.headers.putIfAbsent('X-Auth-Token',
+        () => '${tokenProvider.currentValue?.accessToken}');
+    options.headers.putIfAbsent('X-User-Id',
+            () => '${tokenProvider.currentValue?.userId}');
     handler.next(options);
   }
 
   @override
   void onError(DioException error, ErrorInterceptorHandler handler) async {
+    log('onError: ${error.response?.statusCode} -- ${tokenProvider.currentValue}');
     if (error.response?.statusCode == 401 &&
         tokenProvider.currentValue != null) {
       developer.log('onError 401 [$error]', name: TAG);
       RequestOptions options = error.response!.requestOptions;
-      if ('Bearer ${tokenProvider.currentValue?.accessToken}' !=
+      if ('${tokenProvider.currentValue?.accessToken}' !=
           options.headers["X-Auth-Token"]) {
         options.headers["X-Auth-Token"] =
             '${tokenProvider.currentValue?.accessToken}';

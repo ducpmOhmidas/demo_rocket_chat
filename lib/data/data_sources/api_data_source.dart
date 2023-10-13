@@ -4,10 +4,11 @@ import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/authentication_entity.dart';
 import '../../domain/entities/profile_entity.dart';
+import '../../initialize_dependencies.dart';
 import '../dtos/authentication_dto.dart';
 
 class ApiDataSource {
-  final Dio _dio = GetIt.I.get();
+  final Dio _dio = sl.get();
 
   Future<AuthenticationEntity> login(String userName, String passWord) async {
     final data = {

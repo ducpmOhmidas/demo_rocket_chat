@@ -18,7 +18,7 @@ class LocalService {
     if (auth != null) {
       await _sharedPref.setString(keyAuth, jsonEncode(auth.toJson()));
     } else {
-      _sharedPref.clear();
+      await _sharedPref.clear();
     }
   }
 

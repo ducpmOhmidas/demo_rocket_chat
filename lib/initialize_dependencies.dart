@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_application/application/services/auth_service.dart';
 import 'package:flutter_application/application/services/local_service.dart';
@@ -32,6 +34,7 @@ Future initializeDependencies() async {
       Oauth2Manager<AuthenticationDto>(
           currentValue: sl.get<LocalService>().getAuthenticationDto(),
           onSave: (value) {
+            log('onSave: $value');
             if (value == null) {
               sl.get<LocalService>().saveAuth(auth: null);
             } else {

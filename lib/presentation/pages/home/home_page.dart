@@ -41,13 +41,13 @@ class _HomePageState extends State<HomePage> {
             return HomeDrawerWidget(
               profile: profile,
               onLogin: () {
-                context.read<AuthBloc>().logout();
-                context.read<HomeBloc>().fetchDefaultData();
-              },
-              onLogout: () {
                 context
                     .read<AuthNavigationBloc>()
                     .setState(AuthNavigationState.unAuthorized());
+              },
+              onLogout: () {
+                context.read<AuthBloc>().logout();
+                context.read<HomeBloc>().fetchDefaultData();
               },
             );
           }),
