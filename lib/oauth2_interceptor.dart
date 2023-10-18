@@ -63,9 +63,10 @@ class Oauth2Interceptor extends QueuedInterceptor {
       oauth2Dio.post(pathRefreshToken, data: {
         keyRefreshToken: tokenProvider.currentValue?.refreshToken
       }).then((value) {
+        log('"X-Auth-Token: ${tokenProvider.currentValue?.accessToken}');
         tokenProvider.add(parserJson(value.data));
-        options.headers["Authorization"] =
-            'Bearer ${tokenProvider.currentValue?.accessToken}';
+        options.headers["X-Auth-Token"] =
+            '${tokenProvider.currentValue?.accessToken}';
       }, onError: (error) {
         tokenProvider.add(null);
         handler.reject(error);
