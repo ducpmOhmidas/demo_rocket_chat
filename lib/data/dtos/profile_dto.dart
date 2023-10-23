@@ -13,7 +13,7 @@ class ProfileDto extends ProfileEntity {
   ProfileDto(this.name, this.id);
 
   @override
-  String name;
+  String? name;
 
   @override
   String? get email {

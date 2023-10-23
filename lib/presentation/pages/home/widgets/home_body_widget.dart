@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/presentation/pages/chat/chat_page.dart';
 import 'package:flutter_application/presentation/pages/forms/forms_page.dart';
 
 class HomeBodyWidget extends StatefulWidget {
@@ -22,6 +23,9 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
           ElevatedButton(onPressed: () {
             Navigator.pushNamed(context, FormsPage.path);
           }, child: Text('Forms')),
+          ElevatedButton(onPressed: () {
+            Navigator.pushNamed(context, ChatPage.path);
+          }, child: Text('Chat')),
         ],
       ),
     );

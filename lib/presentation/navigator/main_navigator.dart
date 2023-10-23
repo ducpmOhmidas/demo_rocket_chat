@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/domain/entities/room_entity.dart';
 import 'package:flutter_application/presentation/blocs/home/home_bloc.dart';
+import 'package:flutter_application/presentation/pages/chat/chat_page.dart';
+import 'package:flutter_application/presentation/pages/chat/detail/chat_detail_page.dart';
 import 'package:flutter_application/presentation/pages/forms/forms_page.dart';
 import 'package:flutter_application/presentation/pages/home/home_page.dart';
 import 'package:flutter_application/utils/navigator_support.dart';
@@ -29,6 +32,14 @@ class _MainNavigatorState extends State<MainNavigator> {
               return MaterialPageRoute(builder: (context) => const HomePage());
             case FormsPage.path:
               return MaterialPageRoute(builder: (context) => const FormsPage());
+            case ChatPage.path:
+              return MaterialPageRoute(builder: (context) => const ChatPage());
+            case ChatDetailPage.path:
+              final roomEntity = settings.arguments as RoomEntity;
+              return MaterialPageRoute(
+                  builder: (context) => ChatDetailPage(
+                        roomEntity: roomEntity,
+                      ));
             default:
               return MaterialPageRoute(builder: (context) => Container());
           }

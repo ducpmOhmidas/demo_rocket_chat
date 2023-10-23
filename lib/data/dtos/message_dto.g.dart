@@ -8,7 +8,7 @@ part of 'message_dto.dart';
 
 MessageDto _$MessageDtoFromJson(Map<String, dynamic> json) => MessageDto(
       json['_id'] as String,
-      json['rid'] as String,
+      json['rid'] as String?,
       (json['mentions'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),

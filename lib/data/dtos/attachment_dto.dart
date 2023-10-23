@@ -60,4 +60,11 @@ class AttachmentDto extends AttachmentEntity {
   @override
   @JsonKey(name: 'title_link')
   String? titleLink;
+
+  @override
+  String? type;
+
+  @override
+  @JsonKey(name: 'video_url')
+  String? videoUrl;
 }

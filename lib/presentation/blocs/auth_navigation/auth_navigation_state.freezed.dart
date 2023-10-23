@@ -24,7 +24,6 @@ mixin _$AuthNavigationState {
     required TResult Function() loadConfig,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? authorized,
@@ -42,7 +41,6 @@ mixin _$AuthNavigationState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthNavigationStateAuthorized value) authorized,
@@ -52,7 +50,6 @@ mixin _$AuthNavigationState {
     required TResult Function(AuthNavigationStateLoadConfig value) loadConfig,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthNavigationStateAuthorized value)? authorized,
@@ -84,35 +81,36 @@ class _$AuthNavigationStateCopyWithImpl<$Res, $Val extends AuthNavigationState>
     implements $AuthNavigationStateCopyWith<$Res> {
   _$AuthNavigationStateCopyWithImpl(this._value, this._then);
 
-// ignore: unused_field
+  // ignore: unused_field
   final $Val _value;
-// ignore: unused_field
+  // ignore: unused_field
   final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$AuthNavigationStateAuthorizedCopyWith<$Res> {
-  factory _$$AuthNavigationStateAuthorizedCopyWith(
-          _$AuthNavigationStateAuthorized value,
-          $Res Function(_$AuthNavigationStateAuthorized) then) =
-      __$$AuthNavigationStateAuthorizedCopyWithImpl<$Res>;
+abstract class _$$AuthNavigationStateAuthorizedImplCopyWith<$Res> {
+  factory _$$AuthNavigationStateAuthorizedImplCopyWith(
+          _$AuthNavigationStateAuthorizedImpl value,
+          $Res Function(_$AuthNavigationStateAuthorizedImpl) then) =
+      __$$AuthNavigationStateAuthorizedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthNavigationStateAuthorizedCopyWithImpl<$Res>
+class __$$AuthNavigationStateAuthorizedImplCopyWithImpl<$Res>
     extends _$AuthNavigationStateCopyWithImpl<$Res,
-        _$AuthNavigationStateAuthorized>
-    implements _$$AuthNavigationStateAuthorizedCopyWith<$Res> {
-  __$$AuthNavigationStateAuthorizedCopyWithImpl(
-      _$AuthNavigationStateAuthorized _value,
-      $Res Function(_$AuthNavigationStateAuthorized) _then)
+        _$AuthNavigationStateAuthorizedImpl>
+    implements _$$AuthNavigationStateAuthorizedImplCopyWith<$Res> {
+  __$$AuthNavigationStateAuthorizedImplCopyWithImpl(
+      _$AuthNavigationStateAuthorizedImpl _value,
+      $Res Function(_$AuthNavigationStateAuthorizedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthNavigationStateAuthorized implements AuthNavigationStateAuthorized {
-  const _$AuthNavigationStateAuthorized();
+class _$AuthNavigationStateAuthorizedImpl
+    implements AuthNavigationStateAuthorized {
+  const _$AuthNavigationStateAuthorizedImpl();
 
   @override
   String toString() {
@@ -123,7 +121,7 @@ class _$AuthNavigationStateAuthorized implements AuthNavigationStateAuthorized {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthNavigationStateAuthorized);
+            other is _$AuthNavigationStateAuthorizedImpl);
   }
 
   @override
@@ -207,33 +205,33 @@ class _$AuthNavigationStateAuthorized implements AuthNavigationStateAuthorized {
 
 abstract class AuthNavigationStateAuthorized implements AuthNavigationState {
   const factory AuthNavigationStateAuthorized() =
-      _$AuthNavigationStateAuthorized;
+      _$AuthNavigationStateAuthorizedImpl;
 }
 
 /// @nodoc
-abstract class _$$AuthNavigationStateUnAuthorizedCopyWith<$Res> {
-  factory _$$AuthNavigationStateUnAuthorizedCopyWith(
-          _$AuthNavigationStateUnAuthorized value,
-          $Res Function(_$AuthNavigationStateUnAuthorized) then) =
-      __$$AuthNavigationStateUnAuthorizedCopyWithImpl<$Res>;
+abstract class _$$AuthNavigationStateUnAuthorizedImplCopyWith<$Res> {
+  factory _$$AuthNavigationStateUnAuthorizedImplCopyWith(
+          _$AuthNavigationStateUnAuthorizedImpl value,
+          $Res Function(_$AuthNavigationStateUnAuthorizedImpl) then) =
+      __$$AuthNavigationStateUnAuthorizedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthNavigationStateUnAuthorizedCopyWithImpl<$Res>
+class __$$AuthNavigationStateUnAuthorizedImplCopyWithImpl<$Res>
     extends _$AuthNavigationStateCopyWithImpl<$Res,
-        _$AuthNavigationStateUnAuthorized>
-    implements _$$AuthNavigationStateUnAuthorizedCopyWith<$Res> {
-  __$$AuthNavigationStateUnAuthorizedCopyWithImpl(
-      _$AuthNavigationStateUnAuthorized _value,
-      $Res Function(_$AuthNavigationStateUnAuthorized) _then)
+        _$AuthNavigationStateUnAuthorizedImpl>
+    implements _$$AuthNavigationStateUnAuthorizedImplCopyWith<$Res> {
+  __$$AuthNavigationStateUnAuthorizedImplCopyWithImpl(
+      _$AuthNavigationStateUnAuthorizedImpl _value,
+      $Res Function(_$AuthNavigationStateUnAuthorizedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthNavigationStateUnAuthorized
+class _$AuthNavigationStateUnAuthorizedImpl
     implements AuthNavigationStateUnAuthorized {
-  const _$AuthNavigationStateUnAuthorized();
+  const _$AuthNavigationStateUnAuthorizedImpl();
 
   @override
   String toString() {
@@ -244,7 +242,7 @@ class _$AuthNavigationStateUnAuthorized
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthNavigationStateUnAuthorized);
+            other is _$AuthNavigationStateUnAuthorizedImpl);
   }
 
   @override
@@ -328,32 +326,33 @@ class _$AuthNavigationStateUnAuthorized
 
 abstract class AuthNavigationStateUnAuthorized implements AuthNavigationState {
   const factory AuthNavigationStateUnAuthorized() =
-      _$AuthNavigationStateUnAuthorized;
+      _$AuthNavigationStateUnAuthorizedImpl;
 }
 
 /// @nodoc
-abstract class _$$AuthNavigationStateGuestModeCopyWith<$Res> {
-  factory _$$AuthNavigationStateGuestModeCopyWith(
-          _$AuthNavigationStateGuestMode value,
-          $Res Function(_$AuthNavigationStateGuestMode) then) =
-      __$$AuthNavigationStateGuestModeCopyWithImpl<$Res>;
+abstract class _$$AuthNavigationStateGuestModeImplCopyWith<$Res> {
+  factory _$$AuthNavigationStateGuestModeImplCopyWith(
+          _$AuthNavigationStateGuestModeImpl value,
+          $Res Function(_$AuthNavigationStateGuestModeImpl) then) =
+      __$$AuthNavigationStateGuestModeImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthNavigationStateGuestModeCopyWithImpl<$Res>
+class __$$AuthNavigationStateGuestModeImplCopyWithImpl<$Res>
     extends _$AuthNavigationStateCopyWithImpl<$Res,
-        _$AuthNavigationStateGuestMode>
-    implements _$$AuthNavigationStateGuestModeCopyWith<$Res> {
-  __$$AuthNavigationStateGuestModeCopyWithImpl(
-      _$AuthNavigationStateGuestMode _value,
-      $Res Function(_$AuthNavigationStateGuestMode) _then)
+        _$AuthNavigationStateGuestModeImpl>
+    implements _$$AuthNavigationStateGuestModeImplCopyWith<$Res> {
+  __$$AuthNavigationStateGuestModeImplCopyWithImpl(
+      _$AuthNavigationStateGuestModeImpl _value,
+      $Res Function(_$AuthNavigationStateGuestModeImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthNavigationStateGuestMode implements AuthNavigationStateGuestMode {
-  const _$AuthNavigationStateGuestMode();
+class _$AuthNavigationStateGuestModeImpl
+    implements AuthNavigationStateGuestMode {
+  const _$AuthNavigationStateGuestModeImpl();
 
   @override
   String toString() {
@@ -364,7 +363,7 @@ class _$AuthNavigationStateGuestMode implements AuthNavigationStateGuestMode {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthNavigationStateGuestMode);
+            other is _$AuthNavigationStateGuestModeImpl);
   }
 
   @override
@@ -447,32 +446,34 @@ class _$AuthNavigationStateGuestMode implements AuthNavigationStateGuestMode {
 }
 
 abstract class AuthNavigationStateGuestMode implements AuthNavigationState {
-  const factory AuthNavigationStateGuestMode() = _$AuthNavigationStateGuestMode;
+  const factory AuthNavigationStateGuestMode() =
+      _$AuthNavigationStateGuestModeImpl;
 }
 
 /// @nodoc
-abstract class _$$AuthNavigationStateLoadConfigCopyWith<$Res> {
-  factory _$$AuthNavigationStateLoadConfigCopyWith(
-          _$AuthNavigationStateLoadConfig value,
-          $Res Function(_$AuthNavigationStateLoadConfig) then) =
-      __$$AuthNavigationStateLoadConfigCopyWithImpl<$Res>;
+abstract class _$$AuthNavigationStateLoadConfigImplCopyWith<$Res> {
+  factory _$$AuthNavigationStateLoadConfigImplCopyWith(
+          _$AuthNavigationStateLoadConfigImpl value,
+          $Res Function(_$AuthNavigationStateLoadConfigImpl) then) =
+      __$$AuthNavigationStateLoadConfigImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthNavigationStateLoadConfigCopyWithImpl<$Res>
+class __$$AuthNavigationStateLoadConfigImplCopyWithImpl<$Res>
     extends _$AuthNavigationStateCopyWithImpl<$Res,
-        _$AuthNavigationStateLoadConfig>
-    implements _$$AuthNavigationStateLoadConfigCopyWith<$Res> {
-  __$$AuthNavigationStateLoadConfigCopyWithImpl(
-      _$AuthNavigationStateLoadConfig _value,
-      $Res Function(_$AuthNavigationStateLoadConfig) _then)
+        _$AuthNavigationStateLoadConfigImpl>
+    implements _$$AuthNavigationStateLoadConfigImplCopyWith<$Res> {
+  __$$AuthNavigationStateLoadConfigImplCopyWithImpl(
+      _$AuthNavigationStateLoadConfigImpl _value,
+      $Res Function(_$AuthNavigationStateLoadConfigImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthNavigationStateLoadConfig implements AuthNavigationStateLoadConfig {
-  const _$AuthNavigationStateLoadConfig();
+class _$AuthNavigationStateLoadConfigImpl
+    implements AuthNavigationStateLoadConfig {
+  const _$AuthNavigationStateLoadConfigImpl();
 
   @override
   String toString() {
@@ -483,7 +484,7 @@ class _$AuthNavigationStateLoadConfig implements AuthNavigationStateLoadConfig {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthNavigationStateLoadConfig);
+            other is _$AuthNavigationStateLoadConfigImpl);
   }
 
   @override
@@ -567,5 +568,5 @@ class _$AuthNavigationStateLoadConfig implements AuthNavigationStateLoadConfig {
 
 abstract class AuthNavigationStateLoadConfig implements AuthNavigationState {
   const factory AuthNavigationStateLoadConfig() =
-      _$AuthNavigationStateLoadConfig;
+      _$AuthNavigationStateLoadConfigImpl;
 }

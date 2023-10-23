@@ -9,4 +9,6 @@ abstract class AttachmentEntity {
   int? fileSize;
   int? imageSize;
   int? audioSize;
+  String? type;
+  String? videoUrl;
 }

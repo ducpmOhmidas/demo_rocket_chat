@@ -5,9 +5,11 @@ import 'package:flutter_application/application/services/auth_service.dart';
 import 'package:flutter_application/application/services/local_service.dart';
 import 'package:flutter_application/data/impl_repositories/auth/auth_local_repository_impl.dart';
 import 'package:flutter_application/data/impl_repositories/auth/auth_mock_repository_impl.dart';
+import 'package:flutter_application/data/impl_repositories/room/room_repository_impl.dart';
 import 'package:flutter_application/domain/repositories/auth/auth_api_repository.dart';
 import 'package:flutter_application/domain/repositories/auth/auth_local_reposirory.dart';
 import 'package:flutter_application/domain/repositories/auth/auth_mock_repository.dart';
+import 'package:flutter_application/domain/repositories/room/room_repository.dart';
 import 'package:flutter_application/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navigation_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -63,6 +65,7 @@ Future initializeDependencies() async {
   sl.registerLazySingleton<AuthLocalRepository>(
       () => AuthLocalRepositoryImpl());
   sl.registerLazySingleton<AuthMockRepository>(() => AuthMockRepositoryImpl());
+  sl.registerLazySingleton<RoomRepository>(() => RoomRepositoryImpl());
 
   sl.registerLazySingleton(() => AuthNavigationBloc());
   sl.registerLazySingleton(() => AuthService(sl(), sl(), sl()));

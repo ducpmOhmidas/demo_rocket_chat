@@ -8,6 +8,7 @@ import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navi
 import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navigation_state.dart';
 import 'package:flutter_application/presentation/blocs/home/home_bloc.dart';
 import 'package:flutter_application/presentation/blocs/home/home_state.dart';
+import 'package:flutter_application/presentation/pages/home/widgets/guest_body_widget.dart';
 import 'package:flutter_application/presentation/pages/home/widgets/home_body_widget.dart';
 import 'package:flutter_application/presentation/pages/home/widgets/home_drawer_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomePage extends StatefulWidget {
   static const path = 'HomePage';
 
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, this.guestMode = false}) : super(key: key);
+  final bool guestMode;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -57,7 +59,9 @@ class _HomePageState extends State<HomePage> {
         child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return state.when(
             (defaultData) {
-              return HomeBodyWidget(defaultData: defaultData);
+              return widget.guestMode
+                  ? GuestBodyWidget(defaultData: defaultData)
+                  : HomeBodyWidget(defaultData: defaultData);
             },
             loading: () => AppLoadingWidget(),
             error: (e) => AppErrorWidget(error: e),

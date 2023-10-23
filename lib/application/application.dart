@@ -9,6 +9,8 @@ import 'package:flutter_application/themes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../presentation/navigator/guest_navigator.dart';
+
 class Application extends StatefulWidget {
   static const path = 'Application';
 
@@ -35,7 +37,7 @@ class _ApplicationState extends State<Application> {
           return state.when(
               authorized: () => MainNavigator(),
               unAuthorized: () => AuthNavigator(),
-              guestMode: () => MainNavigator(),
+              guestMode: () => GuestNavigator(),
               loadConfig: () => SplashPage(initializeApp: (context) async {
                     if (GetIt.instance.get<LocalService>().isAuthorized()) {
                       return AuthNavigationState.authorized();

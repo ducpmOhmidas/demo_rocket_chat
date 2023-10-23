@@ -36,6 +36,19 @@ dependencies:
   get_it:
   # Local Persist
   shared_preferences:
+  # cached image
+  cached_network_image: ^3.3.0
+  # formatter
+  intl: ^0.18.1
+  # paging
+  flutter_stream_paging: ^1.0.13
+  # data structure support
+  tuple: ^2.0.2
+  # handle IO
+  path_provider: ^2.0.2
+  async: ^2.11.0
+  permission_handler:
+  device_info_plus:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -74,6 +87,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
+    - assets/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -18,7 +18,9 @@ AttachmentDto _$AttachmentDtoFromJson(Map<String, dynamic> json) =>
       json['image_url'] as String?,
       json['title'] as String?,
       json['title_link'] as String?,
-    );
+    )
+      ..type = json['type'] as String?
+      ..videoUrl = json['video_url'] as String?;
 
 Map<String, dynamic> _$AttachmentDtoToJson(AttachmentDto instance) =>
     <String, dynamic>{
@@ -32,4 +34,6 @@ Map<String, dynamic> _$AttachmentDtoToJson(AttachmentDto instance) =>
       'image_url': instance.imageUrl,
       'title': instance.title,
       'title_link': instance.titleLink,
+      'type': instance.type,
+      'video_url': instance.videoUrl,
     };

@@ -24,7 +24,7 @@ class MessageDto extends MessageEntity {
 
   @override
   @JsonKey(name: 'rid')
-  String rid;
+  String? rid;
 
   @JsonKey(name: 'mentions')
   List<Map<String, dynamic>>? mentionsRM;
@@ -66,6 +66,27 @@ class MessageDto extends MessageEntity {
       return attachmentsRM!.map((e) => AttachmentDto.fromJson(e)).toList();
     } else {
       return null;
+    }
+  }
+
+  @override
+  AttachmentStatus get attachmentStatus {
+    if (attachments != null && attachments!.isNotEmpty) {
+      if (attachments!.first.fileFormat != null) {
+        return AttachmentStatus.file;
+      }
+      if (attachments!.first.imageUrl != null) {
+        return AttachmentStatus.image;
+      }
+      if (attachments!.first.videoUrl != null) {
+        return AttachmentStatus.video;
+      }
+      if (attachments!.first.audioUrl != null) {
+        return AttachmentStatus.audio;
+      }
+      return AttachmentStatus.none;
+    } else {
+      return AttachmentStatus.none;
     }
   }
 }

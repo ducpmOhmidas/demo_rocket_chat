@@ -7,7 +7,7 @@ part of 'profile_dto.dart';
 // **************************************************************************
 
 ProfileDto _$ProfileDtoFromJson(Map<String, dynamic> json) => ProfileDto(
-      json['name'] as String,
+      json['name'] as String?,
       json['_id'] as String,
     )
       ..email = json['email'] as String?

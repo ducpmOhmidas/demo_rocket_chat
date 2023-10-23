@@ -1,5 +1,6 @@
 import 'package:flutter_application/data/dtos/message_dto.dart';
 import 'package:flutter_application/domain/entities/room_entity.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/message_entity.dart';
@@ -14,7 +15,7 @@ class RoomDto implements RoomEntity {
   Map<String, dynamic> toJson() => _$RoomDtoToJson(this);
 
   RoomDto(this.isDefault, this.sysMes, this.totalMsgs, this.id,
-      this.lastMessage, this.name, this.updatedAt);
+      this.lastMessage, this.nameRM, this.updatedAtRM, this.usernames);
 
   @override
   @JsonKey(name: 'default')
@@ -42,10 +43,33 @@ class RoomDto implements RoomEntity {
     }
   }
 
-  @override
-  String name;
+  @JsonKey(name: 'name')
+  String? nameRM;
 
   @override
+  String? get name {
+    if (type == 'd') {
+      return usernames != null && usernames!.isNotEmpty ? usernames!.last : '';
+    } else {
+      return nameRM;
+    }
+  }
+
+  final formatter = DateFormat('dd/MM/yyyy');
+
   @JsonKey(name: '_updatedAt')
-  String updatedAt;
+  String? updatedAtRM;
+
+  @override
+  String get updatedAt {
+    return updatedAtRM != null
+        ? formatter.format(DateTime.tryParse(updatedAtRM!) ?? DateTime.now())
+        : '';
+  }
+
+  @override
+  @JsonKey(name: 't')
+  String? type;
+
+  List<String>? usernames;
 }

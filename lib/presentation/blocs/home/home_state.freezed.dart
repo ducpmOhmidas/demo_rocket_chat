@@ -23,7 +23,6 @@ mixin _$HomeState {
     required TResult Function(dynamic error) error,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(String defaultData)? $default, {
@@ -76,27 +75,25 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$HomeStateDataCopyWith<$Res> {
-  factory _$$HomeStateDataCopyWith(
-          _$HomeStateData value, $Res Function(_$HomeStateData) then) =
-      __$$HomeStateDataCopyWithImpl<$Res>;
-
+abstract class _$$HomeStateDataImplCopyWith<$Res> {
+  factory _$$HomeStateDataImplCopyWith(
+          _$HomeStateDataImpl value, $Res Function(_$HomeStateDataImpl) then) =
+      __$$HomeStateDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String defaultData});
 }
 
 /// @nodoc
-class __$$HomeStateDataCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateData>
-    implements _$$HomeStateDataCopyWith<$Res> {
-  __$$HomeStateDataCopyWithImpl(
-      _$HomeStateData _value, $Res Function(_$HomeStateData) _then)
+class __$$HomeStateDataImplCopyWithImpl<$Res>
+    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateDataImpl>
+    implements _$$HomeStateDataImplCopyWith<$Res> {
+  __$$HomeStateDataImplCopyWithImpl(
+      _$HomeStateDataImpl _value, $Res Function(_$HomeStateDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -104,7 +101,7 @@ class __$$HomeStateDataCopyWithImpl<$Res>
   $Res call({
     Object? defaultData = null,
   }) {
-    return _then(_$HomeStateData(
+    return _then(_$HomeStateDataImpl(
       null == defaultData
           ? _value.defaultData
           : defaultData // ignore: cast_nullable_to_non_nullable
@@ -115,8 +112,8 @@ class __$$HomeStateDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$HomeStateData implements HomeStateData {
-  const _$HomeStateData(this.defaultData);
+class _$HomeStateDataImpl implements HomeStateData {
+  const _$HomeStateDataImpl(this.defaultData);
 
   @override
   final String defaultData;
@@ -130,7 +127,7 @@ class _$HomeStateData implements HomeStateData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HomeStateData &&
+            other is _$HomeStateDataImpl &&
             (identical(other.defaultData, defaultData) ||
                 other.defaultData == defaultData));
   }
@@ -141,8 +138,8 @@ class _$HomeStateData implements HomeStateData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$HomeStateDataCopyWith<_$HomeStateData> get copyWith =>
-      __$$HomeStateDataCopyWithImpl<_$HomeStateData>(this, _$identity);
+  _$$HomeStateDataImplCopyWith<_$HomeStateDataImpl> get copyWith =>
+      __$$HomeStateDataImplCopyWithImpl<_$HomeStateDataImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -214,35 +211,34 @@ class _$HomeStateData implements HomeStateData {
 }
 
 abstract class HomeStateData implements HomeState {
-  const factory HomeStateData(final String defaultData) = _$HomeStateData;
+  const factory HomeStateData(final String defaultData) = _$HomeStateDataImpl;
 
   String get defaultData;
-
   @JsonKey(ignore: true)
-  _$$HomeStateDataCopyWith<_$HomeStateData> get copyWith =>
+  _$$HomeStateDataImplCopyWith<_$HomeStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$HomeStateLoadingCopyWith<$Res> {
-  factory _$$HomeStateLoadingCopyWith(
-          _$HomeStateLoading value, $Res Function(_$HomeStateLoading) then) =
-      __$$HomeStateLoadingCopyWithImpl<$Res>;
+abstract class _$$HomeStateLoadingImplCopyWith<$Res> {
+  factory _$$HomeStateLoadingImplCopyWith(_$HomeStateLoadingImpl value,
+          $Res Function(_$HomeStateLoadingImpl) then) =
+      __$$HomeStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeStateLoadingCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateLoading>
-    implements _$$HomeStateLoadingCopyWith<$Res> {
-  __$$HomeStateLoadingCopyWithImpl(
-      _$HomeStateLoading _value, $Res Function(_$HomeStateLoading) _then)
+class __$$HomeStateLoadingImplCopyWithImpl<$Res>
+    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateLoadingImpl>
+    implements _$$HomeStateLoadingImplCopyWith<$Res> {
+  __$$HomeStateLoadingImplCopyWithImpl(_$HomeStateLoadingImpl _value,
+      $Res Function(_$HomeStateLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$HomeStateLoading implements HomeStateLoading {
-  const _$HomeStateLoading();
+class _$HomeStateLoadingImpl implements HomeStateLoading {
+  const _$HomeStateLoadingImpl();
 
   @override
   String toString() {
@@ -252,7 +248,7 @@ class _$HomeStateLoading implements HomeStateLoading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeStateLoading);
+        (other.runtimeType == runtimeType && other is _$HomeStateLoadingImpl);
   }
 
   @override
@@ -328,25 +324,24 @@ class _$HomeStateLoading implements HomeStateLoading {
 }
 
 abstract class HomeStateLoading implements HomeState {
-  const factory HomeStateLoading() = _$HomeStateLoading;
+  const factory HomeStateLoading() = _$HomeStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$HomeStateErrorCopyWith<$Res> {
-  factory _$$HomeStateErrorCopyWith(
-          _$HomeStateError value, $Res Function(_$HomeStateError) then) =
-      __$$HomeStateErrorCopyWithImpl<$Res>;
-
+abstract class _$$HomeStateErrorImplCopyWith<$Res> {
+  factory _$$HomeStateErrorImplCopyWith(_$HomeStateErrorImpl value,
+          $Res Function(_$HomeStateErrorImpl) then) =
+      __$$HomeStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({dynamic error});
 }
 
 /// @nodoc
-class __$$HomeStateErrorCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateError>
-    implements _$$HomeStateErrorCopyWith<$Res> {
-  __$$HomeStateErrorCopyWithImpl(
-      _$HomeStateError _value, $Res Function(_$HomeStateError) _then)
+class __$$HomeStateErrorImplCopyWithImpl<$Res>
+    extends _$HomeStateCopyWithImpl<$Res, _$HomeStateErrorImpl>
+    implements _$$HomeStateErrorImplCopyWith<$Res> {
+  __$$HomeStateErrorImplCopyWithImpl(
+      _$HomeStateErrorImpl _value, $Res Function(_$HomeStateErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -354,7 +349,7 @@ class __$$HomeStateErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$HomeStateError(
+    return _then(_$HomeStateErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -365,8 +360,8 @@ class __$$HomeStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$HomeStateError implements HomeStateError {
-  const _$HomeStateError(this.error);
+class _$HomeStateErrorImpl implements HomeStateError {
+  const _$HomeStateErrorImpl(this.error);
 
   @override
   final dynamic error;
@@ -380,7 +375,7 @@ class _$HomeStateError implements HomeStateError {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HomeStateError &&
+            other is _$HomeStateErrorImpl &&
             const DeepCollectionEquality().equals(other.error, error));
   }
 
@@ -391,8 +386,9 @@ class _$HomeStateError implements HomeStateError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$HomeStateErrorCopyWith<_$HomeStateError> get copyWith =>
-      __$$HomeStateErrorCopyWithImpl<_$HomeStateError>(this, _$identity);
+  _$$HomeStateErrorImplCopyWith<_$HomeStateErrorImpl> get copyWith =>
+      __$$HomeStateErrorImplCopyWithImpl<_$HomeStateErrorImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -464,11 +460,10 @@ class _$HomeStateError implements HomeStateError {
 }
 
 abstract class HomeStateError implements HomeState {
-  const factory HomeStateError(final dynamic error) = _$HomeStateError;
+  const factory HomeStateError(final dynamic error) = _$HomeStateErrorImpl;
 
   dynamic get error;
-
   @JsonKey(ignore: true)
-  _$$HomeStateErrorCopyWith<_$HomeStateError> get copyWith =>
+  _$$HomeStateErrorImplCopyWith<_$HomeStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

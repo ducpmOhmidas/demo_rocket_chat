@@ -22,7 +22,6 @@ mixin _$AuthState {
     required TResult Function() unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(ProfileEntity profileModel)? authorized,
@@ -36,14 +35,12 @@ mixin _$AuthState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateAuthorized value) authorized,
     required TResult Function(AuthStateUnAuthorized value) unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthStateAuthorized value)? authorized,
@@ -70,27 +67,27 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     implements $AuthStateCopyWith<$Res> {
   _$AuthStateCopyWithImpl(this._value, this._then);
 
-// ignore: unused_field
+  // ignore: unused_field
   final $Val _value;
-// ignore: unused_field
+  // ignore: unused_field
   final $Res Function($Val) _then;
 }
 
 /// @nodoc
-abstract class _$$AuthStateAuthorizedCopyWith<$Res> {
-  factory _$$AuthStateAuthorizedCopyWith(_$AuthStateAuthorized value,
-          $Res Function(_$AuthStateAuthorized) then) =
-      __$$AuthStateAuthorizedCopyWithImpl<$Res>;
+abstract class _$$AuthStateAuthorizedImplCopyWith<$Res> {
+  factory _$$AuthStateAuthorizedImplCopyWith(_$AuthStateAuthorizedImpl value,
+          $Res Function(_$AuthStateAuthorizedImpl) then) =
+      __$$AuthStateAuthorizedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ProfileEntity profileModel});
 }
 
 /// @nodoc
-class __$$AuthStateAuthorizedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateAuthorized>
-    implements _$$AuthStateAuthorizedCopyWith<$Res> {
-  __$$AuthStateAuthorizedCopyWithImpl(
-      _$AuthStateAuthorized _value, $Res Function(_$AuthStateAuthorized) _then)
+class __$$AuthStateAuthorizedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateAuthorizedImpl>
+    implements _$$AuthStateAuthorizedImplCopyWith<$Res> {
+  __$$AuthStateAuthorizedImplCopyWithImpl(_$AuthStateAuthorizedImpl _value,
+      $Res Function(_$AuthStateAuthorizedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -98,7 +95,7 @@ class __$$AuthStateAuthorizedCopyWithImpl<$Res>
   $Res call({
     Object? profileModel = null,
   }) {
-    return _then(_$AuthStateAuthorized(
+    return _then(_$AuthStateAuthorizedImpl(
       null == profileModel
           ? _value.profileModel
           : profileModel // ignore: cast_nullable_to_non_nullable
@@ -109,8 +106,8 @@ class __$$AuthStateAuthorizedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthStateAuthorized implements AuthStateAuthorized {
-  const _$AuthStateAuthorized(this.profileModel);
+class _$AuthStateAuthorizedImpl implements AuthStateAuthorized {
+  const _$AuthStateAuthorizedImpl(this.profileModel);
 
   @override
   final ProfileEntity profileModel;
@@ -124,7 +121,7 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthStateAuthorized &&
+            other is _$AuthStateAuthorizedImpl &&
             (identical(other.profileModel, profileModel) ||
                 other.profileModel == profileModel));
   }
@@ -135,8 +132,8 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthStateAuthorizedCopyWith<_$AuthStateAuthorized> get copyWith =>
-      __$$AuthStateAuthorizedCopyWithImpl<_$AuthStateAuthorized>(
+  _$$AuthStateAuthorizedImplCopyWith<_$AuthStateAuthorizedImpl> get copyWith =>
+      __$$AuthStateAuthorizedImplCopyWithImpl<_$AuthStateAuthorizedImpl>(
           this, _$identity);
 
   @override
@@ -204,34 +201,35 @@ class _$AuthStateAuthorized implements AuthStateAuthorized {
 
 abstract class AuthStateAuthorized implements AuthState {
   const factory AuthStateAuthorized(final ProfileEntity profileModel) =
-      _$AuthStateAuthorized;
+      _$AuthStateAuthorizedImpl;
 
   ProfileEntity get profileModel;
   @JsonKey(ignore: true)
-  _$$AuthStateAuthorizedCopyWith<_$AuthStateAuthorized> get copyWith =>
+  _$$AuthStateAuthorizedImplCopyWith<_$AuthStateAuthorizedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AuthStateUnAuthorizedCopyWith<$Res> {
-  factory _$$AuthStateUnAuthorizedCopyWith(_$AuthStateUnAuthorized value,
-          $Res Function(_$AuthStateUnAuthorized) then) =
-      __$$AuthStateUnAuthorizedCopyWithImpl<$Res>;
+abstract class _$$AuthStateUnAuthorizedImplCopyWith<$Res> {
+  factory _$$AuthStateUnAuthorizedImplCopyWith(
+          _$AuthStateUnAuthorizedImpl value,
+          $Res Function(_$AuthStateUnAuthorizedImpl) then) =
+      __$$AuthStateUnAuthorizedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthStateUnAuthorizedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateUnAuthorized>
-    implements _$$AuthStateUnAuthorizedCopyWith<$Res> {
-  __$$AuthStateUnAuthorizedCopyWithImpl(_$AuthStateUnAuthorized _value,
-      $Res Function(_$AuthStateUnAuthorized) _then)
+class __$$AuthStateUnAuthorizedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateUnAuthorizedImpl>
+    implements _$$AuthStateUnAuthorizedImplCopyWith<$Res> {
+  __$$AuthStateUnAuthorizedImplCopyWithImpl(_$AuthStateUnAuthorizedImpl _value,
+      $Res Function(_$AuthStateUnAuthorizedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
-  const _$AuthStateUnAuthorized();
+class _$AuthStateUnAuthorizedImpl implements AuthStateUnAuthorized {
+  const _$AuthStateUnAuthorizedImpl();
 
   @override
   String toString() {
@@ -241,7 +239,8 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthStateUnAuthorized);
+        (other.runtimeType == runtimeType &&
+            other is _$AuthStateUnAuthorizedImpl);
   }
 
   @override
@@ -311,5 +310,5 @@ class _$AuthStateUnAuthorized implements AuthStateUnAuthorized {
 }
 
 abstract class AuthStateUnAuthorized implements AuthState {
-  const factory AuthStateUnAuthorized() = _$AuthStateUnAuthorized;
+  const factory AuthStateUnAuthorized() = _$AuthStateUnAuthorizedImpl;
 }
