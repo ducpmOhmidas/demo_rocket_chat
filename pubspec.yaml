@@ -41,7 +41,7 @@ dependencies:
   # formatter
   intl: ^0.18.1
   # paging
-  flutter_stream_paging: ^1.0.13
+  flutter_stream_paging: ^1.0.14
   # data structure support
   tuple: ^2.0.2
   # handle IO

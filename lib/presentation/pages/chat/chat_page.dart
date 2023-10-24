@@ -35,7 +35,7 @@ class _ChatPageState extends State<ChatPage> {
                 (rooms) => ListView.separated(
                       itemBuilder: (context, index) {
                         final item = rooms[index];
-                        return RoomItemWidget(item: item);
+                        return RoomItemWidget(item: item, key: ValueKey(item.id),);
                       },
                       separatorBuilder: (context, index) {
                         return Padding(

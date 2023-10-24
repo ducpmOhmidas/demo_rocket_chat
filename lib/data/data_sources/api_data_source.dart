@@ -49,7 +49,7 @@ class ApiDataSource {
 
   //region storage
   @override
-  Future<String> downloadFileFromUrl(
+  Future<File> downloadFileFromUrl(
       {required String url, required String localPath}) async {
     try {
       final response = await _dio.download(url, localPath,
@@ -61,9 +61,9 @@ class ApiDataSource {
             followRedirects: false,
           ));
       if (response.statusCode == 200) {
-        return localPath;
+        return File(localPath);
       } else {
-        return response.statusMessage ?? '';
+        throw response.statusMessage ?? '';
       }
     } catch (e) {
       rethrow;

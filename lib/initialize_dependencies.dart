@@ -2,13 +2,18 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application/application/services/auth_service.dart';
+import 'package:flutter_application/application/services/chat_service.dart';
 import 'package:flutter_application/application/services/local_service.dart';
 import 'package:flutter_application/data/impl_repositories/auth/auth_local_repository_impl.dart';
 import 'package:flutter_application/data/impl_repositories/auth/auth_mock_repository_impl.dart';
+import 'package:flutter_application/data/impl_repositories/chat/chat_api_repository_impl.dart';
+import 'package:flutter_application/data/impl_repositories/chat/chat_local_repository_impl.dart';
 import 'package:flutter_application/data/impl_repositories/room/room_repository_impl.dart';
 import 'package:flutter_application/domain/repositories/auth/auth_api_repository.dart';
 import 'package:flutter_application/domain/repositories/auth/auth_local_reposirory.dart';
 import 'package:flutter_application/domain/repositories/auth/auth_mock_repository.dart';
+import 'package:flutter_application/domain/repositories/chat/chat_api_repository.dart';
+import 'package:flutter_application/domain/repositories/chat/chat_local_repository.dart';
 import 'package:flutter_application/domain/repositories/room/room_repository.dart';
 import 'package:flutter_application/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_application/presentation/blocs/auth_navigation/auth_navigation_bloc.dart';
@@ -24,13 +29,48 @@ final sl = GetIt.I;
 
 Future initializeDependencies() async {
   final baseUrl = dotenv.get('BASE_URL');
-  Dio dio = Dio(BaseOptions(baseUrl: baseUrl))
-    ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+  final baseImageUrl = dotenv.get('BASE_IMAGE_URL');
+
+  //region local IO
 
   final _sharedPres = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => _sharedPres);
 
+  //endregion
+
+  //region repo
+
+  sl.registerLazySingleton<AuthApiRepository>(() => AuthApiRepositoryImpl());
+  sl.registerLazySingleton<AuthLocalRepository>(
+      () => AuthLocalRepositoryImpl());
+  sl.registerLazySingleton<AuthMockRepository>(() => AuthMockRepositoryImpl());
+  sl.registerLazySingleton<RoomRepository>(() => RoomRepositoryImpl());
+  sl.registerLazySingleton<ChatApiRepository>(() => ChatApiRepositoryImpl());
+  sl.registerLazySingleton<ChatLocalRepository>(
+      () => ChatLocalRepositoryImpl());
+
+  //endregion
+
+  //region service
+
   sl.registerLazySingleton(() => LocalService());
+  sl.registerLazySingleton(() => ChatService(baseImageUrl,
+      chatApiRepository: sl.get(), chatLocalRepository: sl.get()));
+
+  //endregion
+
+  //region state
+
+  sl.registerLazySingleton(() => AuthNavigationBloc());
+  sl.registerLazySingleton(() => AuthService(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => AuthBloc());
+
+  //endregion
+
+  //region network server
+
+  Dio dio = Dio(BaseOptions(baseUrl: baseUrl))
+    ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
   Oauth2Manager<AuthenticationDto> oauth2manager =
       Oauth2Manager<AuthenticationDto>(
@@ -61,13 +101,5 @@ Future initializeDependencies() async {
 
   sl.registerLazySingleton(() => dio);
 
-  sl.registerLazySingleton<AuthApiRepository>(() => AuthApiRepositoryImpl());
-  sl.registerLazySingleton<AuthLocalRepository>(
-      () => AuthLocalRepositoryImpl());
-  sl.registerLazySingleton<AuthMockRepository>(() => AuthMockRepositoryImpl());
-  sl.registerLazySingleton<RoomRepository>(() => RoomRepositoryImpl());
-
-  sl.registerLazySingleton(() => AuthNavigationBloc());
-  sl.registerLazySingleton(() => AuthService(sl(), sl(), sl()));
-  sl.registerLazySingleton(() => AuthBloc());
+  //endregion
 }

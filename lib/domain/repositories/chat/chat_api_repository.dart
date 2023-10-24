@@ -1,6 +1,6 @@
-import 'package:flutter_application/domain/entities/message_entity.dart';
+import 'dart:io';
 
 abstract class ChatApiRepository {
-  Future<String> getMediaNetWork(
+  Future<File> getMediaNetWork(
       {required String url, required String localPath});
 }

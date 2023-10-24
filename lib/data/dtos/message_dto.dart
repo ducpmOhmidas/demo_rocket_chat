@@ -46,12 +46,12 @@ class MessageDto extends MessageEntity {
   String? get updatedAt;
 
   @JsonKey(name: 'u')
-  Map<String, dynamic>? userInforRM;
+  ProfileDto? userInforRM;
 
   @override
   ProfileEntity? get userInfor {
     if (userInforRM != null) {
-      return ProfileDto.fromJson(userInforRM!);
+      return userInforRM;
     } else {
       return null;
     }

@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'app_image_error_widget.dart';
 import 'app_image_loading_widget.dart';
 
-const kSizeImageCache = 100;
+const kSizeImageCache = 1080;
 
 class AppImageWidget extends StatelessWidget {
   const AppImageWidget(
@@ -16,14 +19,19 @@ class AppImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final baseImageUrl = dotenv.get('BASE_IMAGE_URL');
+
+    log('imageUrl: ${'$baseImageUrl$url'}');
+
     return CachedNetworkImage(
+      key: ValueKey(url),
       height: height,
       width: width,
       fit: BoxFit.cover,
-      imageUrl: url,
+      imageUrl: '$baseImageUrl$url',
       maxWidthDiskCache: kSizeImageCache,
       memCacheWidth: kSizeImageCache,
-      cacheKey: url,
+      // cacheKey: url,
       placeholder: (BuildContext context, url) => const AppImageLoadingWidget(),
       errorWidget: (BuildContext context, url, err) => AppImageErrorWidget(
         width: width,

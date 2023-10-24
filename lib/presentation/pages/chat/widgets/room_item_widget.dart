@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/design_system_widgets/image/app_image_widget.dart';
 import 'package:flutter_application/domain/entities/room_entity.dart';
+import 'package:flutter_application/presentation/blocs/room/room_bloc.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/chat_detail_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RoomItemWidget extends StatelessWidget {
   const RoomItemWidget({Key? key, required this.item}) : super(key: key);
@@ -10,8 +12,11 @@ class RoomItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, ChatDetailPage.path, arguments: item);
+      onTap: () async {
+        final isGranted = await context.read<RoomBloc>().checkNavDetail();
+        if (isGranted) {
+          Navigator.pushNamed(context, ChatDetailPage.path, arguments: item);
+        }
       },
       child: Row(
         children: [

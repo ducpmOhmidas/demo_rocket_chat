@@ -378,10 +378,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_stream_paging
-      sha256: "584a157155daeca4b21f444ae51b12620c6dff2773d62e3dc968d36e360153c8"
+      sha256: "1e6d18203f0a169d97e81e0743bb87578131e1e2cd2d49648e2b2ccaf3ccc22f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.13"
+    version: "1.0.14"
   flutter_test:
     dependency: "direct dev"
     description: flutter

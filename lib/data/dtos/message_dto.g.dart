@@ -13,7 +13,9 @@ MessageDto _$MessageDtoFromJson(Map<String, dynamic> json) => MessageDto(
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),
       json['msg'] as String?,
-      json['u'] as Map<String, dynamic>?,
+      json['u'] == null
+          ? null
+          : ProfileDto.fromJson(json['u'] as Map<String, dynamic>),
       (json['attachments'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),

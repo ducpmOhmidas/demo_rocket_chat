@@ -4,7 +4,7 @@ import 'package:flutter_stream_paging/data_source/data_source.dart';
 import 'package:tuple/tuple.dart';
 
 class MessageDataSource extends DataSource<int, MessageEntity> {
-  MessageDataSource({required this.roomId});
+  MessageDataSource({required this.roomId}) : super(pageSize: 10);
 
   final _apiDataSource = ApiDataSource();
 
