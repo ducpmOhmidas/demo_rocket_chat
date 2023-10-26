@@ -8,19 +8,19 @@ part of 'attachment_dto.dart';
 
 AttachmentDto _$AttachmentDtoFromJson(Map<String, dynamic> json) =>
     AttachmentDto(
-      json['audio_size'] as int?,
-      json['audio_url'] as String?,
-      json['description'] as String?,
-      json['format'] as String?,
-      json['size'] as int?,
-      json['id'] as int?,
-      json['image_size'] as int?,
-      json['image_url'] as String?,
-      json['title'] as String?,
-      json['title_link'] as String?,
-    )
-      ..type = json['type'] as String?
-      ..videoUrl = json['video_url'] as String?;
+      audioSize: json['audio_size'] as int?,
+      audioUrl: json['audio_url'] as String?,
+      fileDescription: json['description'] as String?,
+      fileFormat: json['format'] as String?,
+      fileSize: json['size'] as int?,
+      id: json['id'] as int?,
+      imageSize: json['image_size'] as int?,
+      imageUrl: json['image_url'] as String?,
+      title: json['title'] as String?,
+      titleLink: json['title_link'] as String?,
+      type: json['type'] as String?,
+      videoUrl: json['video_url'] as String?,
+    );
 
 Map<String, dynamic> _$AttachmentDtoToJson(AttachmentDto instance) =>
     <String, dynamic>{

@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_application/data/dtos/authentication_dto.dart';
+import 'package:flutter_application/domain/entities/message_entity.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,5 +64,29 @@ class LocalService {
     return Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
+  }
+
+  Future<XFile?> onPickFile({
+    ImageSource source = ImageSource.camera,
+    AttachmentStatus status = AttachmentStatus.image,
+  }) async {
+    final ImagePicker _picker = ImagePicker();
+    switch (status) {
+      case AttachmentStatus.image:
+        final XFile? pickedFile = await _picker.pickImage(
+          source: source,
+          imageQuality: 100,
+        );
+        return pickedFile;
+      case AttachmentStatus.video:
+        final XFile? file = await _picker.pickVideo(
+            source: source, maxDuration: const Duration(seconds: 10));
+        return file;
+      default:
+        final XFile? media = await _picker.pickMedia(
+          imageQuality: 100,
+        );
+        return media;
+    }
   }
 }

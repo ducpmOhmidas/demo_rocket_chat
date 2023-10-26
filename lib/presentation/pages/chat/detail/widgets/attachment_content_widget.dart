@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/design_system_widgets/image/app_image_widget.dart';
 import 'package:flutter_application/presentation/blocs/message/message_bloc.dart';
+import 'package:flutter_application/presentation/pages/chat/detail/widgets/audio_attachment_widget.dart';
+import 'package:flutter_application/presentation/pages/chat/detail/widgets/video_attachment_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../domain/entities/message_entity.dart';
+import 'file_attachment_widget.dart';
 
 class AttachmentContentWidget extends StatelessWidget {
   const AttachmentContentWidget({Key? key, required this.item})
@@ -18,24 +21,19 @@ class AttachmentContentWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(file.title ?? '',
-                style: Theme.of(context).textTheme.bodyMedium),
-            Text(
-              file.title ?? '',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w400),
-            ),
+            FileAttachmentWidget(),
             Text(file.fileDescription ?? ''),
           ],
         );
       case AttachmentStatus.image:
         final file = item.attachments!.first;
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(file.fileDescription ?? ''),
-            Expanded(
+            SizedBox(
+              width: double.infinity,
+              height: 160,
               child: AppImageWidget(
                 url: item.attachments!.first.imageUrl!,
                 width: double.infinity,
@@ -50,31 +48,20 @@ class AttachmentContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(file.fileDescription ?? ''),
-            Expanded(
-              child: context
-                          .watch<MessageBloc>()
-                          .state
-                          .mapOrNull((value) => value.mediaLoading) ==
-                      true
-                  ? Container(
-                      color: Colors.black,
-                      child: Center(
-                        child: Icon(
-                          Icons.play_circle,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                  : AppImageWidget(
-                      url: item.attachments!.first.videoUrl!,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
-            ),
+            VideoAttachmentWidget(
+              key: ValueKey(item.id),
+                videoUrl: item.attachments!.first.videoUrl!),
           ],
         );
       case AttachmentStatus.audio:
-        return SizedBox();
+        final file = item.attachments!.first;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(file.fileDescription ?? ''),
+            AudioAttachmentWidget(audioUrl: item.attachments!.first.audioUrl!),
+          ],
+        );
       default:
         return SizedBox();
     }

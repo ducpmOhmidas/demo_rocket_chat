@@ -18,7 +18,13 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MessageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -26,7 +32,13 @@ mixin _$MessageState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult? Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -34,7 +46,13 @@ mixin _$MessageState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -89,7 +107,13 @@ abstract class _$$MessageStateDataImplCopyWith<$Res> {
           $Res Function(_$MessageStateDataImpl) then) =
       __$$MessageStateDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({MessageEntity data, File? mediaFile, bool mediaLoading});
+  $Res call(
+      {MessageEntity data,
+      File? mediaFile,
+      MediaStatus mediaStatus,
+      VideoPlayerController? videoController,
+      ChewieController? chewieController,
+      AudioPlayer? audioController});
 }
 
 /// @nodoc
@@ -105,7 +129,10 @@ class __$$MessageStateDataImplCopyWithImpl<$Res>
   $Res call({
     Object? data = null,
     Object? mediaFile = freezed,
-    Object? mediaLoading = null,
+    Object? mediaStatus = null,
+    Object? videoController = freezed,
+    Object? chewieController = freezed,
+    Object? audioController = freezed,
   }) {
     return _then(_$MessageStateDataImpl(
       null == data
@@ -116,10 +143,22 @@ class __$$MessageStateDataImplCopyWithImpl<$Res>
           ? _value.mediaFile
           : mediaFile // ignore: cast_nullable_to_non_nullable
               as File?,
-      mediaLoading: null == mediaLoading
-          ? _value.mediaLoading
-          : mediaLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
+      mediaStatus: null == mediaStatus
+          ? _value.mediaStatus
+          : mediaStatus // ignore: cast_nullable_to_non_nullable
+              as MediaStatus,
+      videoController: freezed == videoController
+          ? _value.videoController
+          : videoController // ignore: cast_nullable_to_non_nullable
+              as VideoPlayerController?,
+      chewieController: freezed == chewieController
+          ? _value.chewieController
+          : chewieController // ignore: cast_nullable_to_non_nullable
+              as ChewieController?,
+      audioController: freezed == audioController
+          ? _value.audioController
+          : audioController // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
     ));
   }
 }
@@ -128,18 +167,28 @@ class __$$MessageStateDataImplCopyWithImpl<$Res>
 
 class _$MessageStateDataImpl implements MessageStateData {
   const _$MessageStateDataImpl(this.data,
-      {this.mediaFile, required this.mediaLoading});
+      {this.mediaFile,
+      required this.mediaStatus,
+      this.videoController,
+      this.chewieController,
+      this.audioController});
 
   @override
   final MessageEntity data;
   @override
   final File? mediaFile;
   @override
-  final bool mediaLoading;
+  final MediaStatus mediaStatus;
+  @override
+  final VideoPlayerController? videoController;
+  @override
+  final ChewieController? chewieController;
+  @override
+  final AudioPlayer? audioController;
 
   @override
   String toString() {
-    return 'MessageState(data: $data, mediaFile: $mediaFile, mediaLoading: $mediaLoading)';
+    return 'MessageState(data: $data, mediaFile: $mediaFile, mediaStatus: $mediaStatus, videoController: $videoController, chewieController: $chewieController, audioController: $audioController)';
   }
 
   @override
@@ -150,12 +199,19 @@ class _$MessageStateDataImpl implements MessageStateData {
             (identical(other.data, data) || other.data == data) &&
             (identical(other.mediaFile, mediaFile) ||
                 other.mediaFile == mediaFile) &&
-            (identical(other.mediaLoading, mediaLoading) ||
-                other.mediaLoading == mediaLoading));
+            (identical(other.mediaStatus, mediaStatus) ||
+                other.mediaStatus == mediaStatus) &&
+            (identical(other.videoController, videoController) ||
+                other.videoController == videoController) &&
+            (identical(other.chewieController, chewieController) ||
+                other.chewieController == chewieController) &&
+            (identical(other.audioController, audioController) ||
+                other.audioController == audioController));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data, mediaFile, mediaLoading);
+  int get hashCode => Object.hash(runtimeType, data, mediaFile, mediaStatus,
+      videoController, chewieController, audioController);
 
   @JsonKey(ignore: true)
   @override
@@ -167,36 +223,57 @@ class _$MessageStateDataImpl implements MessageStateData {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
-    return $default(data, mediaFile, mediaLoading);
+    return $default(data, mediaFile, mediaStatus, videoController,
+        chewieController, audioController);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult? Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
-    return $default?.call(data, mediaFile, mediaLoading);
+    return $default?.call(data, mediaFile, mediaStatus, videoController,
+        chewieController, audioController);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(data, mediaFile, mediaLoading);
+      return $default(data, mediaFile, mediaStatus, videoController,
+          chewieController, audioController);
     }
     return orElse();
   }
@@ -239,11 +316,17 @@ class _$MessageStateDataImpl implements MessageStateData {
 abstract class MessageStateData implements MessageState {
   const factory MessageStateData(final MessageEntity data,
       {final File? mediaFile,
-      required final bool mediaLoading}) = _$MessageStateDataImpl;
+      required final MediaStatus mediaStatus,
+      final VideoPlayerController? videoController,
+      final ChewieController? chewieController,
+      final AudioPlayer? audioController}) = _$MessageStateDataImpl;
 
   MessageEntity get data;
   File? get mediaFile;
-  bool get mediaLoading;
+  MediaStatus get mediaStatus;
+  VideoPlayerController? get videoController;
+  ChewieController? get chewieController;
+  AudioPlayer? get audioController;
   @JsonKey(ignore: true)
   _$$MessageStateDataImplCopyWith<_$MessageStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -288,7 +371,13 @@ class _$MessageStateLoadingImpl implements MessageStateLoading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -299,7 +388,13 @@ class _$MessageStateLoadingImpl implements MessageStateLoading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult? Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -310,7 +405,13 @@ class _$MessageStateLoadingImpl implements MessageStateLoading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -427,7 +528,13 @@ class _$MessageStateErrorImpl implements MessageStateError {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -438,7 +545,13 @@ class _$MessageStateErrorImpl implements MessageStateError {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult? Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -449,7 +562,13 @@ class _$MessageStateErrorImpl implements MessageStateError {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(MessageEntity data, File? mediaFile, bool mediaLoading)?
+    TResult Function(
+            MessageEntity data,
+            File? mediaFile,
+            MediaStatus mediaStatus,
+            VideoPlayerController? videoController,
+            ChewieController? chewieController,
+            AudioPlayer? audioController)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,

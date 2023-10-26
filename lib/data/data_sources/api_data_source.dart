@@ -87,14 +87,26 @@ class ApiDataSource {
 
   //region chat
   Future<List<MessageEntity>> fetchMessages(
-      {required String roomId, required int offset, required int total}) async {
+      {required String roomId, required int offset, required int total, String type = 'c'}) async {
     final queryParameters = {
       'roomId': roomId,
       'offset': offset,
       'count': total,
     };
+    final String endpoint;
+    switch (type) {
+      case 'd':
+        endpoint = '/im.messages';
+        break;
+      case 'p':
+        endpoint = '/groups.history';
+        break;
+      default:
+        endpoint = '/channels.messages';
+        break;
+    }
     final response =
-        await _dio.get('/channels.messages', queryParameters: queryParameters);
+        await _dio.get(endpoint, queryParameters: queryParameters);
     if (response.statusCode == 200) {
       return (response.data['messages'] as List<dynamic>?)
               ?.map((e) => MessageDto.fromJson(e as Map<String, dynamic>))

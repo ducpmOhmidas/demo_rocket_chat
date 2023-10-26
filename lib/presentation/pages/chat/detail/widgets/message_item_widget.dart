@@ -30,7 +30,9 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
       child: BlocConsumer<MessageBloc, MessageState>(
           builder: (context, state) {
             return state.when(
-                (data, mediaFile, mediaLoading) => Row(
+                (data, mediaFile, mediaLoading, videoController,
+                        chewieController, audioController) =>
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppImageWidget(url: 'url'),
@@ -49,21 +51,17 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
                                   ),
                                   Text(
                                     data.updatedAt ?? '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   )
                                 ],
                               ),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 160,
-                                child: AttachmentContentWidget(item: data),
+                              AttachmentContentWidget(
+                                item: data,
+                                key: ValueKey(data.id),
                               ),
                               Text(data.msg ?? '',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall),
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
                         )

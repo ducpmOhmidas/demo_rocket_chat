@@ -15,8 +15,15 @@ class MessageDto extends MessageEntity {
 
   Map<String, dynamic> toJson() => _$MessageDtoToJson(this);
 
-  MessageDto(this.id, this.rid, this.mentionsRM, this.msg, this.userInforRM,
-      this.attachmentsRM);
+  MessageDto({
+    required this.id,
+    this.rid,
+    this.mentionsRM,
+    this.msg,
+    this.userInforRM,
+    this.attachmentsRM,
+  });
+
 
   @override
   @JsonKey(name: '_id')
@@ -27,12 +34,12 @@ class MessageDto extends MessageEntity {
   String? rid;
 
   @JsonKey(name: 'mentions')
-  List<Map<String, dynamic>>? mentionsRM;
+  List<ProfileDto>? mentionsRM;
 
   @override
   List<ProfileEntity>? get userMentions {
     if (mentionsRM != null && mentionsRM!.isNotEmpty) {
-      return mentionsRM!.map((e) => ProfileDto.fromJson(e)).toList();
+      return mentionsRM;
     } else {
       return null;
     }
@@ -58,12 +65,12 @@ class MessageDto extends MessageEntity {
   }
 
   @JsonKey(name: 'attachments')
-  List<Map<String, dynamic>>? attachmentsRM;
+  List<AttachmentDto>? attachmentsRM;
 
   @override
   List<AttachmentEntity>? get attachments {
     if (attachmentsRM != null && attachmentsRM!.isNotEmpty) {
-      return attachmentsRM!.map((e) => AttachmentDto.fromJson(e)).toList();
+      return attachmentsRM;
     } else {
       return null;
     }
@@ -89,4 +96,23 @@ class MessageDto extends MessageEntity {
       return AttachmentStatus.none;
     }
   }
+
+  MessageDto copyWith({
+    String? id,
+    String? rid,
+    List<ProfileDto>? mentionsRM,
+    String? msg,
+    ProfileDto? userInforRM,
+    List<AttachmentDto>? attachmentsRM,
+  }) {
+    return MessageDto(
+      id: id ?? this.id,
+      rid: rid ?? this.rid,
+      mentionsRM: mentionsRM ?? this.mentionsRM,
+      msg: msg ?? this.msg,
+      userInforRM: userInforRM ?? this.userInforRM,
+      attachmentsRM: attachmentsRM ?? this.attachmentsRM,
+    );
+  }
+
 }

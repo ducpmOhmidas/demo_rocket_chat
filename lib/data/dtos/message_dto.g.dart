@@ -7,17 +7,17 @@ part of 'message_dto.dart';
 // **************************************************************************
 
 MessageDto _$MessageDtoFromJson(Map<String, dynamic> json) => MessageDto(
-      json['_id'] as String,
-      json['rid'] as String?,
-      (json['mentions'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
+      id: json['_id'] as String,
+      rid: json['rid'] as String?,
+      mentionsRM: (json['mentions'] as List<dynamic>?)
+          ?.map((e) => ProfileDto.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['msg'] as String?,
-      json['u'] == null
+      msg: json['msg'] as String?,
+      userInforRM: json['u'] == null
           ? null
           : ProfileDto.fromJson(json['u'] as Map<String, dynamic>),
-      (json['attachments'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
+      attachmentsRM: (json['attachments'] as List<dynamic>?)
+          ?.map((e) => AttachmentDto.fromJson(e as Map<String, dynamic>))
           .toList(),
     )..updatedAt = json['_updatedAt'] as String?;
 

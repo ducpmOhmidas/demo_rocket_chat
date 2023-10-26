@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_application/domain/repositories/chat/chat_api_repository.dart';
 import 'package:flutter_application/domain/repositories/chat/chat_local_repository.dart';
 
+import '../../domain/entities/message_entity.dart';
 import '../../initialize_dependencies.dart';
 import 'local_service.dart';
 
@@ -16,20 +17,33 @@ class ChatService {
 
   final _localService = sl.get<LocalService>();
 
-  Future<File> getMedia({required String url}) async {
+  Future<File> getMedia({required String url, required AttachmentStatus status}) async {
     final dir = await _localService.getDirectory();
+    final String fileType;
+    switch (status) {
+      case AttachmentStatus.video:
+        fileType = 'mp4';
+        break;
+      default:
+        fileType = _fileType(url: url);
+        break;
+    }
     //	https://chat.ohmidasvn.dev/file-upload/6537246e955bcdac5fa2622f/2023-10-24T01:56:54.068Z.jpg
-    final localPath = '${dir!.path}/${_fileName(url: url)}';
-    log('getMedia: $localPath');
+    final localPath = '${dir!.path}/${_fileName(url: url)}.$fileType';
+    log('getMedia: $localPath -- $baseImageUrl$url');
     final fileData = chatLocalRepository.getMediaCache(localPath: localPath);
     if (fileData.item2) {
       return fileData.item1;
     } else {
-      return chatApiRepository.getMediaNetWork(url: url, localPath: localPath);
+      return chatApiRepository.getMediaNetWork(url: '$baseImageUrl$url', localPath: localPath);
     }
   }
 
   String _fileName({required String url}) {
-    return url.split('/').last;
+    return url.split('/').last.split('.').first;
+  }
+
+  String _fileType({required String url}) {
+    return url.split('.').last;
   }
 }

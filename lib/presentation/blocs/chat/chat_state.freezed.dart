@@ -18,21 +18,36 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ChatState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages) $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)
+        $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(List<MessageEntity> messages)? $default, {
+    TResult? Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages)? $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
@@ -85,7 +100,11 @@ abstract class _$$ChatStateDataImplCopyWith<$Res> {
           _$ChatStateDataImpl value, $Res Function(_$ChatStateDataImpl) then) =
       __$$ChatStateDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<MessageEntity> messages});
+  $Res call(
+      {TextEditingController textEditingController,
+      MessageDataSource messageDataSource,
+      ChatActionStatus chatActionStatus,
+      MessageEntity? messageEntity});
 }
 
 /// @nodoc
@@ -99,13 +118,28 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? messages = null,
+    Object? textEditingController = null,
+    Object? messageDataSource = null,
+    Object? chatActionStatus = null,
+    Object? messageEntity = freezed,
   }) {
     return _then(_$ChatStateDataImpl(
-      null == messages
-          ? _value._messages
-          : messages // ignore: cast_nullable_to_non_nullable
-              as List<MessageEntity>,
+      null == textEditingController
+          ? _value.textEditingController
+          : textEditingController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
+      null == messageDataSource
+          ? _value.messageDataSource
+          : messageDataSource // ignore: cast_nullable_to_non_nullable
+              as MessageDataSource,
+      null == chatActionStatus
+          ? _value.chatActionStatus
+          : chatActionStatus // ignore: cast_nullable_to_non_nullable
+              as ChatActionStatus,
+      messageEntity: freezed == messageEntity
+          ? _value.messageEntity
+          : messageEntity // ignore: cast_nullable_to_non_nullable
+              as MessageEntity?,
     ));
   }
 }
@@ -113,20 +147,22 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ChatStateDataImpl implements ChatStateData {
-  const _$ChatStateDataImpl(final List<MessageEntity> messages)
-      : _messages = messages;
+  const _$ChatStateDataImpl(
+      this.textEditingController, this.messageDataSource, this.chatActionStatus,
+      {this.messageEntity});
 
-  final List<MessageEntity> _messages;
   @override
-  List<MessageEntity> get messages {
-    if (_messages is EqualUnmodifiableListView) return _messages;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_messages);
-  }
+  final TextEditingController textEditingController;
+  @override
+  final MessageDataSource messageDataSource;
+  @override
+  final ChatActionStatus chatActionStatus;
+  @override
+  final MessageEntity? messageEntity;
 
   @override
   String toString() {
-    return 'ChatState(messages: $messages)';
+    return 'ChatState(textEditingController: $textEditingController, messageDataSource: $messageDataSource, chatActionStatus: $chatActionStatus, messageEntity: $messageEntity)';
   }
 
   @override
@@ -134,12 +170,19 @@ class _$ChatStateDataImpl implements ChatStateData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatStateDataImpl &&
-            const DeepCollectionEquality().equals(other._messages, _messages));
+            (identical(other.textEditingController, textEditingController) ||
+                other.textEditingController == textEditingController) &&
+            (identical(other.messageDataSource, messageDataSource) ||
+                other.messageDataSource == messageDataSource) &&
+            (identical(other.chatActionStatus, chatActionStatus) ||
+                other.chatActionStatus == chatActionStatus) &&
+            (identical(other.messageEntity, messageEntity) ||
+                other.messageEntity == messageEntity));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_messages));
+  int get hashCode => Object.hash(runtimeType, textEditingController,
+      messageDataSource, chatActionStatus, messageEntity);
 
   @JsonKey(ignore: true)
   @override
@@ -150,33 +193,51 @@ class _$ChatStateDataImpl implements ChatStateData {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages) $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)
+        $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
-    return $default(messages);
+    return $default(textEditingController, messageDataSource, chatActionStatus,
+        messageEntity);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(List<MessageEntity> messages)? $default, {
+    TResult? Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
-    return $default?.call(messages);
+    return $default?.call(textEditingController, messageDataSource,
+        chatActionStatus, messageEntity);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages)? $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(messages);
+      return $default(textEditingController, messageDataSource,
+          chatActionStatus, messageEntity);
     }
     return orElse();
   }
@@ -217,10 +278,16 @@ class _$ChatStateDataImpl implements ChatStateData {
 }
 
 abstract class ChatStateData implements ChatState {
-  const factory ChatStateData(final List<MessageEntity> messages) =
-      _$ChatStateDataImpl;
+  const factory ChatStateData(
+      final TextEditingController textEditingController,
+      final MessageDataSource messageDataSource,
+      final ChatActionStatus chatActionStatus,
+      {final MessageEntity? messageEntity}) = _$ChatStateDataImpl;
 
-  List<MessageEntity> get messages;
+  TextEditingController get textEditingController;
+  MessageDataSource get messageDataSource;
+  ChatActionStatus get chatActionStatus;
+  MessageEntity? get messageEntity;
   @JsonKey(ignore: true)
   _$$ChatStateDataImplCopyWith<_$ChatStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -264,7 +331,12 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages) $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)
+        $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
@@ -274,7 +346,12 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(List<MessageEntity> messages)? $default, {
+    TResult? Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
@@ -284,7 +361,12 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages)? $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
@@ -400,7 +482,12 @@ class _$ChatStateErrorImpl implements ChatStateError {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages) $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)
+        $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
@@ -410,7 +497,12 @@ class _$ChatStateErrorImpl implements ChatStateError {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(List<MessageEntity> messages)? $default, {
+    TResult? Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
@@ -420,7 +512,12 @@ class _$ChatStateErrorImpl implements ChatStateError {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(List<MessageEntity> messages)? $default, {
+    TResult Function(
+            TextEditingController textEditingController,
+            MessageDataSource messageDataSource,
+            ChatActionStatus chatActionStatus,
+            MessageEntity? messageEntity)?
+        $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),

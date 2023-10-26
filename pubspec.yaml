@@ -38,6 +38,12 @@ dependencies:
   shared_preferences:
   # cached image
   cached_network_image: ^3.3.0
+  # load player
+  video_player: ^2.7.2
+  chewie: ^1.7.1
+  #load audio
+  audio_session: ^0.1.16
+  just_audio: ^0.9.35
   # formatter
   intl: ^0.18.1
   # paging
@@ -49,6 +55,8 @@ dependencies:
   async: ^2.11.0
   permission_handler:
   device_info_plus:
+  open_file: ^3.3.2
+  image_picker: ^1.0.4
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -10,17 +10,6 @@ class AttachmentDto extends AttachmentEntity {
 
   Map<String, dynamic> toJson() => _$AttachmentDtoToJson(this);
 
-  AttachmentDto(
-      this.audioSize,
-      this.audioUrl,
-      this.fileDescription,
-      this.fileFormat,
-      this.fileSize,
-      this.id,
-      this.imageSize,
-      this.imageUrl,
-      this.title,
-      this.titleLink);
 
   @override
   @JsonKey(name: 'audio_size')
@@ -67,4 +56,49 @@ class AttachmentDto extends AttachmentEntity {
   @override
   @JsonKey(name: 'video_url')
   String? videoUrl;
+
+  AttachmentDto({
+    this.audioSize,
+    this.audioUrl,
+    this.fileDescription,
+    this.fileFormat,
+    this.fileSize,
+    this.id,
+    this.imageSize,
+    this.imageUrl,
+    this.title,
+    this.titleLink,
+    this.type,
+    this.videoUrl,
+  });
+
+  AttachmentDto copyWith({
+    int? audioSize,
+    String? audioUrl,
+    String? fileDescription,
+    String? fileFormat,
+    int? fileSize,
+    int? id,
+    int? imageSize,
+    String? imageUrl,
+    String? title,
+    String? titleLink,
+    String? type,
+    String? videoUrl,
+  }) {
+    return AttachmentDto(
+      audioSize: audioSize ?? this.audioSize,
+      audioUrl: audioUrl ?? this.audioUrl,
+      fileDescription: fileDescription ?? this.fileDescription,
+      fileFormat: fileFormat ?? this.fileFormat,
+      fileSize: fileSize ?? this.fileSize,
+      id: id ?? this.id,
+      imageSize: imageSize ?? this.imageSize,
+      imageUrl: imageUrl ?? this.imageUrl,
+      title: title ?? this.title,
+      titleLink: titleLink ?? this.titleLink,
+      type: type ?? this.type,
+      videoUrl: videoUrl ?? this.videoUrl,
+    );
+  }
 }
