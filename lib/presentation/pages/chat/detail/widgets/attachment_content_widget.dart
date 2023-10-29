@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/design_system_widgets/image/app_image_widget.dart';
 import 'package:flutter_application/presentation/blocs/message/message_bloc.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/audio_attachment_widget.dart';
+import 'package:flutter_application/presentation/pages/chat/detail/widgets/image_attachment_widget.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/video_attachment_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,14 +32,17 @@ class AttachmentContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(file.fileDescription ?? ''),
-            SizedBox(
+            Container(
               width: double.infinity,
               height: 160,
-              child: AppImageWidget(
-                url: item.attachments!.first.imageUrl!,
-                width: double.infinity,
-                height: double.infinity,
-              ),
+              color: Colors.red,
+              child:  ImageAttachmentWidget(width: double.infinity, height: double.infinity,)
+              // AppImageWidget(
+              //   key: key,
+              //   url: item.attachments!.first.imageUrl!,
+              //   width: double.infinity,
+              //   height: double.infinity,
+              // ),
             )
           ],
         );

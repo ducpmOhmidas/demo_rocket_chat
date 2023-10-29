@@ -24,7 +24,6 @@ class MessageDto extends MessageEntity {
     this.attachmentsRM,
   });
 
-
   @override
   @JsonKey(name: '_id')
   String id;
@@ -79,19 +78,18 @@ class MessageDto extends MessageEntity {
   @override
   AttachmentStatus get attachmentStatus {
     if (attachments != null && attachments!.isNotEmpty) {
-      if (attachments!.first.fileFormat != null) {
-        return AttachmentStatus.file;
-      }
-      if (attachments!.first.imageUrl != null) {
+      if (
+          attachments!.first.imageUrl != null) {
         return AttachmentStatus.image;
       }
-      if (attachments!.first.videoUrl != null) {
+      if (
+          attachments!.first.videoUrl != null) {
         return AttachmentStatus.video;
       }
       if (attachments!.first.audioUrl != null) {
         return AttachmentStatus.audio;
       }
-      return AttachmentStatus.none;
+      return AttachmentStatus.file;
     } else {
       return AttachmentStatus.none;
     }
@@ -114,5 +112,4 @@ class MessageDto extends MessageEntity {
       attachmentsRM: attachmentsRM ?? this.attachmentsRM,
     );
   }
-
 }

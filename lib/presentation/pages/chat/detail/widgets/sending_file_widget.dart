@@ -13,10 +13,11 @@ class SendingFileWidget extends StatefulWidget {
       required this.roomName,
       required this.messageEntity,
       required this.onSend,
-      required this.chatActionStatus})
+      required this.chatActionStatus, required this.onClose})
       : super(key: key);
   final String roomName;
   final MessageEntity messageEntity;
+  final Function() onClose;
   final Function(String message) onSend;
   final ChatActionStatus chatActionStatus;
 
@@ -31,7 +32,8 @@ class _SendingFileWidgetState extends State<SendingFileWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: double.infinity,
+      height: MediaQuery.sizeOf(context).height * 0.9,
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
         children: [
           Expanded(
@@ -42,9 +44,7 @@ class _SendingFileWidgetState extends State<SendingFileWidget> {
                   Row(
                     children: [
                       IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                          onPressed: widget.onClose,
                           icon: Icon(
                             Icons.close,
                             color: Colors.white,
@@ -121,8 +121,7 @@ class LocalFileWidget extends StatelessWidget {
                   .bodyMedium
                   ?.copyWith(color: Colors.white),),
               const SizedBox(height: 4,),
-              Text(
-                {messageEntity.attachments!.first.fileSize ?}.toString() ?? '', style: Theme.of(context)
+              Text(messageEntity.attachments!.first.fileSize?.toString() ?? '', style: Theme.of(context)
                   .textTheme
                   .bodyMedium
                   ?.copyWith(color: Colors.white),)

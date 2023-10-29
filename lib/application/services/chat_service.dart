@@ -9,7 +9,11 @@ import '../../initialize_dependencies.dart';
 import 'local_service.dart';
 
 class ChatService {
-  ChatService(this.baseImageUrl, {required this.chatApiRepository, required this.chatLocalRepository, });
+  ChatService(
+    this.baseImageUrl, {
+    required this.chatApiRepository,
+    required this.chatLocalRepository,
+  });
 
   final ChatApiRepository chatApiRepository;
   final ChatLocalRepository chatLocalRepository;
@@ -17,7 +21,8 @@ class ChatService {
 
   final _localService = sl.get<LocalService>();
 
-  Future<File> getMedia({required String url, required AttachmentStatus status}) async {
+  Future<File> getMedia(
+      {required String url, required AttachmentStatus status}) async {
     final dir = await _localService.getDirectory();
     final String fileType;
     switch (status) {
@@ -35,7 +40,8 @@ class ChatService {
     if (fileData.item2) {
       return fileData.item1;
     } else {
-      return chatApiRepository.getMediaNetWork(url: '$baseImageUrl$url', localPath: localPath);
+      return chatApiRepository.getMediaNetWork(
+          url: '$baseImageUrl$url', localPath: localPath);
     }
   }
 
@@ -45,5 +51,18 @@ class ChatService {
 
   String _fileType({required String url}) {
     return url.split('.').last;
+  }
+
+  Future<MessageEntity> sendMessage(
+      {required MessageEntity messageData}) async {
+    switch (messageData.attachmentStatus) {
+      case AttachmentStatus.file:
+      case AttachmentStatus.image:
+      case AttachmentStatus.video:
+      case AttachmentStatus.audio:
+        return chatApiRepository.uploadFile(messageData);
+      default:
+        return chatApiRepository.sendMessage(messageData);
+    }
   }
 }

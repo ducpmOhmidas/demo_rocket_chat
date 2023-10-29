@@ -13,6 +13,7 @@ import 'package:flutter_application/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_application/presentation/blocs/chat/chat_bloc.dart';
 import 'package:flutter_application/presentation/blocs/chat/chat_state.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/message_item_widget.dart';
+import 'package:flutter_application/presentation/pages/chat/detail/widgets/record_widget.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/select_file_option_widget.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/sending_file_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,8 @@ class ChatDetailPage extends StatefulWidget {
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
+  OverlayEntry? overlayEntry;
+
   @override
   void initState() {
     super.initState();
@@ -42,16 +45,18 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     return BlocProvider(
       create: (context) => ChatBloc(
         localService: sl.get(),
+        chatService: sl.get(),
         roomEntity: widget.roomEntity,
       ),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text(widget.roomEntity.name ?? ''),
         ),
         body: BlocConsumer<ChatBloc, ChatState>(builder: (context, state) {
           return state.when(
             (textEditingController, messageDataSource, chatActionStatus,
-                    currentMessage) =>
+                    currentMessage, recordProgressTimer) =>
                 PagingListView<int, MessageEntity>.separated(
               reverse: true,
               separatorBuilder: (_, index) => SizedBox(
@@ -71,43 +76,69 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
               isEnablePullToRefresh: false,
               addItemBuilder: (context, onAddItem) {
-                return AppTextFormField(
-                  textEditingController: textEditingController,
-                  hint: 'New message',
-                  suffix: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            context.read<ChatBloc>().selectOption();
-                          },
-                          icon: Icon(Icons.add)),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.mic_none)),
-                    ],
-                  ),
-                  typingSuffix: IconButton(
-                    onPressed: () {
-                      // onAddItem(MessageDto(
-                      //     DateTime.now().hashCode.toString(),
-                      //     widget.roomEntity.id,
-                      //     null,
-                      //     textEditingController.text,
-                      //     context.read<AuthBloc>().state.mapOrNull(
-                      //         authorized: (v) => ProfileDto(
-                      //             v.profileModel.name, v.profileModel.id)),
-                      //     null));
-                      textEditingController.clear();
+                return BlocListener<ChatBloc, ChatState>(
+                    listener: (context, state) async {
+                      overlayEntry = OverlayEntry(
+                        // Create a new OverlayEntry.
+                        builder: (BuildContext bContext) {
+                          // Align is used to position the highlight overlay
+                          // relative to the NavigationBar destination.
+                          return Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            color: Colors.black.withOpacity(0.1),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      );
+                      Overlay.of(context).insert(overlayEntry!);
+                      await context
+                          .read<ChatBloc>()
+                          .sendMessageToServer()
+                          .then((value) => onAddItem(value));
                     },
-                    icon: Icon(Icons.send),
-                  ),
-                  prefix: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.emoji_emotions_outlined),
-                  ),
-                  onChanged: (v) {
-                    log('onChanged: $v -- ${textEditingController.text}');
-                  },
-                );
+                    listenWhen: (oldState, currState) {
+                      return currState
+                              .mapOrNull((value) => value.chatActionStatus) ==
+                          ChatActionStatus.send;
+                    },
+                    child: (chatActionStatus == ChatActionStatus.recordAudio)
+                        ? RecordWidget(
+                            onClose: context.read<ChatBloc>().closeRecorder,
+                            onSend: context.read<ChatBloc>().send,
+                          )
+                        : AppTextFormField(
+                            textEditingController: textEditingController,
+                            hint: 'New message',
+                            suffix: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      context.read<ChatBloc>().selectOption();
+                                    },
+                                    icon: Icon(Icons.add)),
+                                IconButton(
+                                    onPressed: () async {
+                                      await context.read<ChatBloc>().record();
+                                    },
+                                    icon: Icon(Icons.mic_none)),
+                              ],
+                            ),
+                            typingSuffix: IconButton(
+                              onPressed: context.read<ChatBloc>().send,
+                              icon: Icon(Icons.send),
+                            ),
+                            prefix: IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.emoji_emotions_outlined),
+                            ),
+                            onChanged: (v) {
+                              log('onChanged: $v -- ${textEditingController.text}');
+                            },
+                          ));
               },
               newPageProgressIndicatorBuilder: (_, onLoadMore) => SizedBox(),
             ),
@@ -118,6 +149,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           );
         }, listener: (context, state) async {
           state.mapOrNull((value) async {
+            log('value.chatActionStatus: ${value.chatActionStatus}');
             switch (value.chatActionStatus) {
               case ChatActionStatus.selectOption:
                 final pickFileOptions = [
@@ -146,32 +178,44 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 ];
                 await showModalBottomSheet(
                     context: context,
-                    builder: (context) {
+                    builder: (contextDialog) {
                       return SelectFileOptionWidget(
                         pickFileOptions: pickFileOptions,
                       );
-                    }).then((value) => context.read<ChatBloc>().closeDialog());
+                    }).then((value) => context.read<ChatBloc>().closeSend());
                 break;
               case ChatActionStatus.sendingImage:
               case ChatActionStatus.sendingVideo:
               case ChatActionStatus.sendingFile:
                 await showModalBottomSheet(
                     context: context,
-                    builder: (context) {
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    builder: (contextDialog) {
                       return SendingFileWidget(
                         roomName: widget.roomEntity.name ?? '',
                         messageEntity: value.messageEntity!,
                         onSend: (v) {
-                          log('onSend: $v');
+                          context.read<ChatBloc>().send(description: v);
                         },
                         chatActionStatus: value.chatActionStatus,
+                        onClose: context.read<ChatBloc>().closeSend,
                       );
-                    }).then((value) => context.read<ChatBloc>().closeDialog());
+                    }).then((value) => context.read<ChatBloc>().closeSend());
                 break;
               case ChatActionStatus.close:
+                overlayEntry?.remove();
+                overlayEntry = null;
                 Navigator.pop(context);
                 break;
               default:
+                overlayEntry?.remove();
+                overlayEntry = null;
                 break;
             }
           });

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_application/data/dtos/authentication_dto.dart';
 import 'package:flutter_application/domain/entities/message_entity.dart';
 import 'package:image_picker/image_picker.dart';
@@ -60,10 +61,14 @@ class LocalService {
     }
   }
 
+  Future<bool> handleRecorderPermission() async {
+    return await requestPermission(Permission.microphone);
+  }
+
   Future<Directory?> getDirectory() async {
     return Platform.isAndroid
         ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
+        : await getTemporaryDirectory();
   }
 
   Future<XFile?> onPickFile({
@@ -82,6 +87,17 @@ class LocalService {
         final XFile? file = await _picker.pickVideo(
             source: source, maxDuration: const Duration(seconds: 10));
         return file;
+      case AttachmentStatus.file:
+        FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+        // final XFile? file = await _picker.pickVideo(
+        //     source: source, maxDuration: const Duration(seconds: 10));
+        if (result != null) {
+          final file = XFile(result.files.single.path!);
+          return file;
+        } else {
+          return null;
+        }
       default:
         final XFile? media = await _picker.pickMedia(
           imageQuality: 100,

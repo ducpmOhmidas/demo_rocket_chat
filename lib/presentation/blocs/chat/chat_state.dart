@@ -12,6 +12,8 @@ enum ChatActionStatus {
   sendingImage,
   sendingVideo,
   sendingFile,
+  recordAudio,
+  send,
   close
 }
 
@@ -19,7 +21,7 @@ enum ChatActionStatus {
 abstract class ChatState with _$ChatState {
   const factory ChatState(TextEditingController textEditingController,
       MessageDataSource messageDataSource, ChatActionStatus chatActionStatus,
-      {MessageEntity? messageEntity}) = ChatStateData;
+      {MessageEntity? messageEntity, String? recordProgressTimer}) = ChatStateData;
   const factory ChatState.loading() = ChatStateLoading;
   const factory ChatState.error(dynamic error) = ChatStateError;
 }

@@ -23,7 +23,7 @@ class AppImageWidget extends StatelessWidget {
 
     log('imageUrl: ${'$baseImageUrl$url'}');
 
-    return CachedNetworkImage(
+     return CachedNetworkImage(
       key: ValueKey(url),
       height: height,
       width: width,

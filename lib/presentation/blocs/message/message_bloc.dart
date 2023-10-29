@@ -10,7 +10,9 @@ import 'package:video_player/video_player.dart';
 class MessageBloc extends Cubit<MessageState> {
   MessageBloc({required MessageEntity data, required ChatService chatService})
       : _chatService = chatService,
-        super(MessageStateData(data, mediaStatus: MediaStatus.init));
+        super(MessageStateData(data, mediaStatus: MediaStatus.init)) {
+    init();
+  }
 
   final ChatService _chatService;
 
@@ -18,6 +20,7 @@ class MessageBloc extends Cubit<MessageState> {
   Future<void> close() {
     state.mapOrNull((value) => value.videoController)?.dispose();
     state.mapOrNull((value) => value.chewieController)?.dispose();
+    state.mapOrNull((value) => value.audioController)?.stop();
     state.mapOrNull((value) => value.audioController)?.dispose();
     return super.close();
   }
@@ -28,10 +31,16 @@ class MessageBloc extends Cubit<MessageState> {
       case AttachmentStatus.file:
         break;
       case AttachmentStatus.image:
-        // final mediaFile = await _chatService.getMedia(
-        //     url: data!.attachments!.first.imageUrl!);
-        // emit(state.maybeMap((value) => value.copyWith(mediaFile: mediaFile),
-        //     orElse: () => state));
+        emit(state.maybeMap(
+            (value) => value.copyWith(mediaStatus: MediaStatus.loading),
+            orElse: () => state));
+        final mediaFile = await _chatService.getMedia(
+            url: data!.attachments!.first.imageUrl!,
+            status: AttachmentStatus.image);
+        emit(state.maybeMap(
+            (value) => value.copyWith(
+                mediaFile: mediaFile, mediaStatus: MediaStatus.data),
+            orElse: () => state));
         break;
       case AttachmentStatus.video:
         break;
@@ -81,6 +90,7 @@ class MessageBloc extends Cubit<MessageState> {
             audioController: controller,
             mediaStatus: MediaStatus.data),
         orElse: () => state));
+    await controller.play();
   }
 
   Future openFile() async {

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -12,6 +13,7 @@ import '../../domain/entities/profile_entity.dart';
 import '../../domain/entities/room_entity.dart';
 import '../../initialize_dependencies.dart';
 import '../dtos/authentication_dto.dart';
+import 'package:http_parser/src/media_type.dart';
 
 class ApiDataSource {
   final Dio _dio = sl.get();
@@ -87,7 +89,10 @@ class ApiDataSource {
 
   //region chat
   Future<List<MessageEntity>> fetchMessages(
-      {required String roomId, required int offset, required int total, String type = 'c'}) async {
+      {required String roomId,
+      required int offset,
+      required int total,
+      String type = 'c'}) async {
     final queryParameters = {
       'roomId': roomId,
       'offset': offset,
@@ -105,8 +110,7 @@ class ApiDataSource {
         endpoint = '/channels.messages';
         break;
     }
-    final response =
-        await _dio.get(endpoint, queryParameters: queryParameters);
+    final response = await _dio.get(endpoint, queryParameters: queryParameters);
     if (response.statusCode == 200) {
       return (response.data['messages'] as List<dynamic>?)
               ?.map((e) => MessageDto.fromJson(e as Map<String, dynamic>))
@@ -116,6 +120,72 @@ class ApiDataSource {
       throw response.statusMessage ?? '';
     }
   }
-  //endregion
 
+  Future<MessageEntity> sendMessage(MessageEntity messageEntity) async {
+    final data = {
+      "message": {"rid": messageEntity.rid, "msg": messageEntity.msg},
+      "previewUrls": []
+    };
+    final response = await _dio.post('/chat.sendMessage', data: data);
+    if (response.statusCode == 200) {
+      return MessageDto.fromJson(response.data['message']);
+    } else {
+      throw response.statusMessage ?? '';
+    }
+  }
+
+  Future<MessageEntity> uploadFile(MessageEntity messageEntity) async {
+    final String filePath;
+    final attachment = messageEntity.attachments!.first;
+    final type;
+    final subType;
+    switch (messageEntity.attachmentStatus) {
+      case AttachmentStatus.file:
+        filePath = attachment.titleLink!;
+        type = 'application';
+        subType = 'octet-stream';
+        break;
+      case AttachmentStatus.image:
+        filePath = attachment.imageUrl!;
+        type = 'image';
+        subType = filePath.split('.').last;
+        break;
+      case AttachmentStatus.video:
+        filePath = attachment.videoUrl!;
+        type = 'video';
+        subType = filePath.split('.').last;
+        break;
+      case AttachmentStatus.audio:
+        filePath = attachment.audioUrl!;
+        type = 'audio';
+        subType = filePath.split('.').last;
+        break;
+      default:
+        filePath = attachment.titleLink!;
+        type = 'application';
+        subType = 'octet-stream';
+        break;
+    }
+    final file = await MultipartFile.fromFile(filePath,
+        // filename: filePath.split('/').last.split('.').first,
+        contentType: MediaType(type, subType)
+    );
+    final formData = FormData.fromMap({
+      "file": file,
+      'msg': messageEntity.msg,
+      'description': attachment.fileDescription,
+    });
+    log('uploadFile: ${file.contentType?.type} -- ${file.contentType?.subtype} -- ${file.filename} -- ${file.headers} -- ${file.contentType?.parameters} -- ${formData.fields}');
+    final response = await _dio.post('/rooms.upload/${messageEntity.rid}',
+        data: formData,
+    );
+    if (response.statusCode == 200) {
+      return MessageDto.fromJson(
+        response.data['message'],
+      );
+    } else {
+      throw response.statusMessage ?? '';
+    }
+  }
+  //endregion
 }

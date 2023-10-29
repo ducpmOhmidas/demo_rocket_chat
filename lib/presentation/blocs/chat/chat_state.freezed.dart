@@ -22,7 +22,8 @@ mixin _$ChatState {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -34,7 +35,8 @@ mixin _$ChatState {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -46,7 +48,8 @@ mixin _$ChatState {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -104,7 +107,8 @@ abstract class _$$ChatStateDataImplCopyWith<$Res> {
       {TextEditingController textEditingController,
       MessageDataSource messageDataSource,
       ChatActionStatus chatActionStatus,
-      MessageEntity? messageEntity});
+      MessageEntity? messageEntity,
+      String? recordProgressTimer});
 }
 
 /// @nodoc
@@ -122,6 +126,7 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
     Object? messageDataSource = null,
     Object? chatActionStatus = null,
     Object? messageEntity = freezed,
+    Object? recordProgressTimer = freezed,
   }) {
     return _then(_$ChatStateDataImpl(
       null == textEditingController
@@ -140,6 +145,10 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
           ? _value.messageEntity
           : messageEntity // ignore: cast_nullable_to_non_nullable
               as MessageEntity?,
+      recordProgressTimer: freezed == recordProgressTimer
+          ? _value.recordProgressTimer
+          : recordProgressTimer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -149,7 +158,7 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
 class _$ChatStateDataImpl implements ChatStateData {
   const _$ChatStateDataImpl(
       this.textEditingController, this.messageDataSource, this.chatActionStatus,
-      {this.messageEntity});
+      {this.messageEntity, this.recordProgressTimer});
 
   @override
   final TextEditingController textEditingController;
@@ -159,10 +168,12 @@ class _$ChatStateDataImpl implements ChatStateData {
   final ChatActionStatus chatActionStatus;
   @override
   final MessageEntity? messageEntity;
+  @override
+  final String? recordProgressTimer;
 
   @override
   String toString() {
-    return 'ChatState(textEditingController: $textEditingController, messageDataSource: $messageDataSource, chatActionStatus: $chatActionStatus, messageEntity: $messageEntity)';
+    return 'ChatState(textEditingController: $textEditingController, messageDataSource: $messageDataSource, chatActionStatus: $chatActionStatus, messageEntity: $messageEntity, recordProgressTimer: $recordProgressTimer)';
   }
 
   @override
@@ -177,12 +188,14 @@ class _$ChatStateDataImpl implements ChatStateData {
             (identical(other.chatActionStatus, chatActionStatus) ||
                 other.chatActionStatus == chatActionStatus) &&
             (identical(other.messageEntity, messageEntity) ||
-                other.messageEntity == messageEntity));
+                other.messageEntity == messageEntity) &&
+            (identical(other.recordProgressTimer, recordProgressTimer) ||
+                other.recordProgressTimer == recordProgressTimer));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, textEditingController,
-      messageDataSource, chatActionStatus, messageEntity);
+      messageDataSource, chatActionStatus, messageEntity, recordProgressTimer);
 
   @JsonKey(ignore: true)
   @override
@@ -197,13 +210,14 @@ class _$ChatStateDataImpl implements ChatStateData {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
     return $default(textEditingController, messageDataSource, chatActionStatus,
-        messageEntity);
+        messageEntity, recordProgressTimer);
   }
 
   @override
@@ -213,13 +227,14 @@ class _$ChatStateDataImpl implements ChatStateData {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
     return $default?.call(textEditingController, messageDataSource,
-        chatActionStatus, messageEntity);
+        chatActionStatus, messageEntity, recordProgressTimer);
   }
 
   @override
@@ -229,7 +244,8 @@ class _$ChatStateDataImpl implements ChatStateData {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -237,7 +253,7 @@ class _$ChatStateDataImpl implements ChatStateData {
   }) {
     if ($default != null) {
       return $default(textEditingController, messageDataSource,
-          chatActionStatus, messageEntity);
+          chatActionStatus, messageEntity, recordProgressTimer);
     }
     return orElse();
   }
@@ -282,12 +298,14 @@ abstract class ChatStateData implements ChatState {
       final TextEditingController textEditingController,
       final MessageDataSource messageDataSource,
       final ChatActionStatus chatActionStatus,
-      {final MessageEntity? messageEntity}) = _$ChatStateDataImpl;
+      {final MessageEntity? messageEntity,
+      final String? recordProgressTimer}) = _$ChatStateDataImpl;
 
   TextEditingController get textEditingController;
   MessageDataSource get messageDataSource;
   ChatActionStatus get chatActionStatus;
   MessageEntity? get messageEntity;
+  String? get recordProgressTimer;
   @JsonKey(ignore: true)
   _$$ChatStateDataImplCopyWith<_$ChatStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -335,7 +353,8 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -350,7 +369,8 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -365,7 +385,8 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -486,7 +507,8 @@ class _$ChatStateErrorImpl implements ChatStateError {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -501,7 +523,8 @@ class _$ChatStateErrorImpl implements ChatStateError {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -516,7 +539,8 @@ class _$ChatStateErrorImpl implements ChatStateError {
             TextEditingController textEditingController,
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
-            MessageEntity? messageEntity)?
+            MessageEntity? messageEntity,
+            String? recordProgressTimer)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,

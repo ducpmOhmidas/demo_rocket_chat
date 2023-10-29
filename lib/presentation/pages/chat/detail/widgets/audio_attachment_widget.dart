@@ -20,7 +20,6 @@ class _AudioAttachmentWidgetState extends State<AudioAttachmentWidget> with Auto
   @override
   void initState() {
     super.initState();
-    context.read<MessageBloc>().downloadAudio();
   }
 
   @override
@@ -115,9 +114,9 @@ class _AudioAttachmentWidgetState extends State<AudioAttachmentWidget> with Auto
                 default:
                   return Row(
                     children: [
-                      SizedBox(
-                        width: 48,
-                        child: AppLoadingWidget(),
+                      IconButton(
+                        icon: const Icon(Icons.play_arrow),
+                        onPressed: context.read<MessageBloc>().downloadAudio,
                       ),
                       Expanded(
                         child: SliderTheme(
