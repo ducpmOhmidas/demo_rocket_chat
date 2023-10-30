@@ -10,7 +10,9 @@ import 'package:video_player/video_player.dart';
 class MessageBloc extends Cubit<MessageState> {
   MessageBloc({required MessageEntity data, required ChatService chatService})
       : _chatService = chatService,
-        super(MessageStateData(data, mediaStatus: MediaStatus.init)) {
+        super(MessageStateData(data,
+            mediaStatus: MediaStatus.init,
+            messageActionStatus: MessageActionStatus.noAction)) {
     init();
   }
 
@@ -49,6 +51,12 @@ class MessageBloc extends Cubit<MessageState> {
       default:
         break;
     }
+  }
+
+  updateMessage({required MessageEntity messageEntity}) {
+    emit(state.maybeMap(
+            (value) => value.copyWith(data: messageEntity),
+        orElse: () => state));
   }
 
   Future downloadVideo() async {
@@ -100,4 +108,59 @@ class MessageBloc extends Cubit<MessageState> {
         status: AttachmentStatus.file);
     await OpenFile.open(mediaFile.path);
   }
+
+  //region handle action
+
+  void initAction() {
+    final messageActionStatus = state.mapOrNull((value) => value.messageActionStatus);
+    if (messageActionStatus != MessageActionStatus.noAction) {
+      emit(state.mapOrNull((value) => value.copyWith(
+          messageActionStatus: MessageActionStatus.noAction)) ??
+          state);
+    }
+  }
+
+  void showAction() {
+    emit(state.mapOrNull((value) => value.copyWith(
+            messageActionStatus: MessageActionStatus.showAction)) ??
+        state);
+  }
+
+  void copy() {}
+
+  Future share() async {}
+
+  Future edit() async {}
+
+  Future delete() async {
+    final messageData = state.mapOrNull((value) => value.data);
+    if (messageData != null) {
+      emit(state.mapOrNull((value) => value.copyWith(
+              messageActionStatus: MessageActionStatus.delete)) ??
+          state);
+      _chatService
+          .handleAction(
+              messageData: messageData, status: MessageActionStatus.delete)
+          .then((value) => emit(state.mapOrNull((value) => value.copyWith(
+                  messageActionStatus: MessageActionStatus.completedDelete)) ??
+              state))
+          .onError((error, stackTrace) => emit(state.mapOrNull(
+                (value) => value.copyWith(
+                    messageActionStatus: MessageActionStatus.error,
+                    errorMsg: error.toString()),
+              ) ??
+              state));
+    }
+  }
+
+  void closeAction() {
+    final messageActionStatus = state.mapOrNull((value) => value.messageActionStatus);
+    if (messageActionStatus != MessageActionStatus.close) {
+      emit(state.mapOrNull((value) => value.copyWith(
+          messageActionStatus: MessageActionStatus.close)) ??
+          state);
+    }
+  }
+
+  //endregion
 }

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/design_system_widgets/app_loading_widget.dart';
 import 'package:flutter_application/presentation/blocs/message/message_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:video_player/video_player.dart';
 
-import '../../../../blocs/message/message_bloc.dart';
+import '../../../../../blocs/message/message_bloc.dart';
+
 
 class VideoAttachmentWidget extends StatefulWidget {
   const VideoAttachmentWidget({Key? key, required this.videoUrl})

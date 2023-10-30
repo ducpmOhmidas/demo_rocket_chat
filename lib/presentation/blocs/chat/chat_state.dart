@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_application/data/data_sources/paging/chat_data_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../domain/entities/message_entity.dart';
 part 'chat_state.freezed.dart';
@@ -14,14 +13,21 @@ enum ChatActionStatus {
   sendingFile,
   recordAudio,
   send,
+  editing,
+  edited,
   close
 }
 
 @freezed
 abstract class ChatState with _$ChatState {
-  const factory ChatState(TextEditingController textEditingController,
-      MessageDataSource messageDataSource, ChatActionStatus chatActionStatus,
-      {MessageEntity? messageEntity, String? recordProgressTimer}) = ChatStateData;
+  const factory ChatState(
+    TextEditingController textEditingController,
+    MessageDataSource messageDataSource,
+    ChatActionStatus chatActionStatus, {
+    MessageEntity? messageEntity,
+    String? recordProgressTimer,
+    FocusNode? textFieldFocusNode
+  }) = ChatStateData;
   const factory ChatState.loading() = ChatStateLoading;
   const factory ChatState.error(dynamic error) = ChatStateError;
 }

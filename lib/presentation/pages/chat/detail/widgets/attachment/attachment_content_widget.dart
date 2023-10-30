@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/design_system_widgets/image/app_image_widget.dart';
-import 'package:flutter_application/presentation/blocs/message/message_bloc.dart';
-import 'package:flutter_application/presentation/pages/chat/detail/widgets/audio_attachment_widget.dart';
-import 'package:flutter_application/presentation/pages/chat/detail/widgets/image_attachment_widget.dart';
-import 'package:flutter_application/presentation/pages/chat/detail/widgets/video_attachment_widget.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../domain/entities/message_entity.dart';
+import '../../../../../../domain/entities/message_entity.dart';
+import 'audio_attachment_widget.dart';
 import 'file_attachment_widget.dart';
+import 'image_attachment_widget.dart';
+import 'video_attachment_widget.dart';
 
 class AttachmentContentWidget extends StatelessWidget {
   const AttachmentContentWidget({Key? key, required this.item})
@@ -22,8 +19,8 @@ class AttachmentContentWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FileAttachmentWidget(),
             Text(file.fileDescription ?? ''),
+            FileAttachmentWidget(),
           ],
         );
       case AttachmentStatus.image:
@@ -37,12 +34,6 @@ class AttachmentContentWidget extends StatelessWidget {
               height: 160,
               color: Colors.red,
               child:  ImageAttachmentWidget(width: double.infinity, height: double.infinity,)
-              // AppImageWidget(
-              //   key: key,
-              //   url: item.attachments!.first.imageUrl!,
-              //   width: double.infinity,
-              //   height: double.infinity,
-              // ),
             )
           ],
         );

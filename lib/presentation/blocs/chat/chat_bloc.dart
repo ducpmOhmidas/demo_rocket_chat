@@ -32,7 +32,8 @@ class ChatBloc extends Cubit<ChatState> {
             TextEditingController(),
             MessageDataSource(
                 roomId: roomEntity.id, roomType: roomEntity.type ?? 'c'),
-            ChatActionStatus.init));
+            ChatActionStatus.init,
+            textFieldFocusNode: FocusNode()));
 
   LocalService _localService;
   ChatService _chatService;
@@ -40,6 +41,14 @@ class ChatBloc extends Cubit<ChatState> {
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   Codec _codec = Codec.aacMP4;
+
+  void init() {
+    emit(state.mapOrNull((value) => value.copyWith(
+              chatActionStatus: ChatActionStatus.init,
+              messageEntity: null,
+            )) ??
+        state);
+  }
 
   void selectOption() {
     emit(state.mapOrNull((value) =>
@@ -133,6 +142,7 @@ class ChatBloc extends Cubit<ChatState> {
             .toList());
   }
 
+  //region record audio
   Future initRecorder() async {
     await _mPlayer.closeAudioSession();
     await openTheRecorder();
@@ -168,6 +178,7 @@ class ChatBloc extends Cubit<ChatState> {
   Future record() async {
     await initRecorder();
     final _recordFile = await _getRecordFile();
+    final messageDto = getMessageDto();
 
     try {
       await _mRecorder.startRecorder(
@@ -180,7 +191,24 @@ class ChatBloc extends Cubit<ChatState> {
         emit(state.mapOrNull((value) => value.copyWith(
                 chatActionStatus: ChatActionStatus.recordAudio,
                 recordProgressTimer:
-                    '${(event.duration.inMinutes % 60).toString().padLeft(2, '0')}:${(event.duration.inSeconds % 60).toString().padLeft(2, '0')}')) ??
+                    '${(event.duration.inMinutes % 60).toString().padLeft(2, '0')}:${(event.duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                messageEntity: messageDto.copyWith(
+                  attachmentsRM: [
+                    AttachmentDto(
+                        id: DateTime.now().hashCode,
+                        audioSize: null,
+                        fileSize: null,
+                        imageSize: null,
+                        audioUrl: _recordFile.path,
+                        fileDescription: '',
+                        fileFormat: null,
+                        imageUrl: null,
+                        title: null,
+                        titleLink: null,
+                        type: null,
+                        videoUrl: null)
+                  ],
+                ))) ??
             state);
       });
     } catch (e) {
@@ -210,14 +238,15 @@ class ChatBloc extends Cubit<ChatState> {
       await _mPlayer.closeAudioSession();
       await _mRecorder.stopRecorder();
       await _mRecorder.closeAudioSession();
-      emit(state.mapOrNull((value) =>
-              value.copyWith(chatActionStatus: ChatActionStatus.init)) ??
-          state);
+      log('closeRecorder: ${state.mapOrNull((value) => value.messageEntity?.attachmentStatus)} -- ${state.mapOrNull((value) => value.messageEntity?.attachments?.first.audioUrl)}');
+      init();
     } catch (e) {
       log('close: error $e');
     }
   }
+  //endregion
 
+  //region send message
   Future<MessageEntity> sendMessageToServer() async {
     final textEditingController =
         state.mapOrNull((value) => value.textEditingController);
@@ -227,45 +256,81 @@ class ChatBloc extends Cubit<ChatState> {
             : null);
     log('sendMessageToServer: ${currentMessage.toJson()} -- ${currentMessage.attachmentsRM?.map((e) => e.toJson()).toList()}');
     final message = await _chatService.sendMessage(
-        messageData: state.mapOrNull((value) => currentMessage)!);
-    closeSend();
+        messageData: currentMessage,
+        isEdit: state.mapOrNull((value) => value.chatActionStatus) ==
+            ChatActionStatus.edited);
+    state.mapOrNull((value) => value.chatActionStatus) ==
+            ChatActionStatus.edited
+        ? init()
+        : closeSend();
     textEditingController?.clear();
     return message;
   }
 
-  void send({String? description}) {
+  Future send({String? description}) async {
     final currentMessage = getMessageDto();
-    emit(state.mapOrNull((value) => value.copyWith(
-            messageEntity: currentMessage.copyWith(
-                attachmentsRM: currentMessage.attachmentsRM
-                    ?.map(
-                      (e) => e.copyWith(fileDescription: description),
-                    )
-                    .toList()),
-            chatActionStatus: ChatActionStatus.send)) ??
-        state);
+    final chatActionStatus = state.mapOrNull((value) => value.chatActionStatus);
+    if (chatActionStatus == ChatActionStatus.editing) {
+      emit(state.mapOrNull((value) => value.copyWith(
+              messageEntity: currentMessage,
+              chatActionStatus: ChatActionStatus.edited)) ??
+          state);
+    } else {
+      if (chatActionStatus == ChatActionStatus.recordAudio) {
+        await closeRecorder();
+      }
+      emit(state.mapOrNull((value) => value.copyWith(
+              messageEntity: currentMessage.copyWith(
+                  attachmentsRM: currentMessage.attachmentsRM
+                      ?.map(
+                        (e) => e.copyWith(fileDescription: description),
+                      )
+                      .toList()),
+              chatActionStatus: ChatActionStatus.send)) ??
+          state);
+    }
   }
 
   void closeSend() {
     final chatActionStatus = state.mapOrNull((value) => value.chatActionStatus);
-    final attachmentStatus = state.mapOrNull((value) => value.messageEntity?.attachmentStatus);
+    final attachmentStatus =
+        state.mapOrNull((value) => value.messageEntity?.attachmentStatus);
     if (chatActionStatus != ChatActionStatus.close) {
       switch (attachmentStatus) {
         case AttachmentStatus.file:
         case AttachmentStatus.video:
         case AttachmentStatus.image:
           emit(state.mapOrNull((value) => value.copyWith(
-            chatActionStatus: ChatActionStatus.close,
-          )) ??
+                    chatActionStatus: ChatActionStatus.close,
+                    messageEntity: null,
+                  )) ??
               state);
           break;
         default:
-          emit(state.mapOrNull((value) => value.copyWith(
-            chatActionStatus: ChatActionStatus.init,
-          )) ??
-              state);
+          init();
           break;
       }
     }
+  }
+  //endregion
+
+  void edit({required MessageEntity messageEntity}) {
+    final msg = (messageEntity.attachmentStatus == AttachmentStatus.none)
+        ? (messageEntity.msg ?? '')
+        : messageEntity.attachments?.first.fileDescription ?? '';
+    state.mapOrNull((value) => value.textEditingController)?.text = msg;
+    state.mapOrNull((value) => value.textFieldFocusNode)?.requestFocus();
+    emit(state.mapOrNull((value) => value.copyWith(
+            chatActionStatus: ChatActionStatus.editing,
+            messageEntity: messageEntity)) ??
+        state);
+  }
+
+  void cancelEdit() {
+    state.mapOrNull((value) => value.textFieldFocusNode)?.unfocus();
+    state.mapOrNull((value) => value.textEditingController)?.clear();
+    emit(state.mapOrNull((value) => value.copyWith(
+            chatActionStatus: ChatActionStatus.init, messageEntity: null)) ??
+        state);
   }
 }

@@ -23,7 +23,8 @@ mixin _$ChatState {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -36,7 +37,8 @@ mixin _$ChatState {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -49,7 +51,8 @@ mixin _$ChatState {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -108,7 +111,8 @@ abstract class _$$ChatStateDataImplCopyWith<$Res> {
       MessageDataSource messageDataSource,
       ChatActionStatus chatActionStatus,
       MessageEntity? messageEntity,
-      String? recordProgressTimer});
+      String? recordProgressTimer,
+      FocusNode? textFieldFocusNode});
 }
 
 /// @nodoc
@@ -127,6 +131,7 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
     Object? chatActionStatus = null,
     Object? messageEntity = freezed,
     Object? recordProgressTimer = freezed,
+    Object? textFieldFocusNode = freezed,
   }) {
     return _then(_$ChatStateDataImpl(
       null == textEditingController
@@ -149,6 +154,10 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
           ? _value.recordProgressTimer
           : recordProgressTimer // ignore: cast_nullable_to_non_nullable
               as String?,
+      textFieldFocusNode: freezed == textFieldFocusNode
+          ? _value.textFieldFocusNode
+          : textFieldFocusNode // ignore: cast_nullable_to_non_nullable
+              as FocusNode?,
     ));
   }
 }
@@ -158,7 +167,7 @@ class __$$ChatStateDataImplCopyWithImpl<$Res>
 class _$ChatStateDataImpl implements ChatStateData {
   const _$ChatStateDataImpl(
       this.textEditingController, this.messageDataSource, this.chatActionStatus,
-      {this.messageEntity, this.recordProgressTimer});
+      {this.messageEntity, this.recordProgressTimer, this.textFieldFocusNode});
 
   @override
   final TextEditingController textEditingController;
@@ -170,10 +179,12 @@ class _$ChatStateDataImpl implements ChatStateData {
   final MessageEntity? messageEntity;
   @override
   final String? recordProgressTimer;
+  @override
+  final FocusNode? textFieldFocusNode;
 
   @override
   String toString() {
-    return 'ChatState(textEditingController: $textEditingController, messageDataSource: $messageDataSource, chatActionStatus: $chatActionStatus, messageEntity: $messageEntity, recordProgressTimer: $recordProgressTimer)';
+    return 'ChatState(textEditingController: $textEditingController, messageDataSource: $messageDataSource, chatActionStatus: $chatActionStatus, messageEntity: $messageEntity, recordProgressTimer: $recordProgressTimer, textFieldFocusNode: $textFieldFocusNode)';
   }
 
   @override
@@ -190,12 +201,20 @@ class _$ChatStateDataImpl implements ChatStateData {
             (identical(other.messageEntity, messageEntity) ||
                 other.messageEntity == messageEntity) &&
             (identical(other.recordProgressTimer, recordProgressTimer) ||
-                other.recordProgressTimer == recordProgressTimer));
+                other.recordProgressTimer == recordProgressTimer) &&
+            (identical(other.textFieldFocusNode, textFieldFocusNode) ||
+                other.textFieldFocusNode == textFieldFocusNode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, textEditingController,
-      messageDataSource, chatActionStatus, messageEntity, recordProgressTimer);
+  int get hashCode => Object.hash(
+      runtimeType,
+      textEditingController,
+      messageDataSource,
+      chatActionStatus,
+      messageEntity,
+      recordProgressTimer,
+      textFieldFocusNode);
 
   @JsonKey(ignore: true)
   @override
@@ -211,13 +230,14 @@ class _$ChatStateDataImpl implements ChatStateData {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
     return $default(textEditingController, messageDataSource, chatActionStatus,
-        messageEntity, recordProgressTimer);
+        messageEntity, recordProgressTimer, textFieldFocusNode);
   }
 
   @override
@@ -228,13 +248,19 @@ class _$ChatStateDataImpl implements ChatStateData {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
-    return $default?.call(textEditingController, messageDataSource,
-        chatActionStatus, messageEntity, recordProgressTimer);
+    return $default?.call(
+        textEditingController,
+        messageDataSource,
+        chatActionStatus,
+        messageEntity,
+        recordProgressTimer,
+        textFieldFocusNode);
   }
 
   @override
@@ -245,15 +271,21 @@ class _$ChatStateDataImpl implements ChatStateData {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(textEditingController, messageDataSource,
-          chatActionStatus, messageEntity, recordProgressTimer);
+      return $default(
+          textEditingController,
+          messageDataSource,
+          chatActionStatus,
+          messageEntity,
+          recordProgressTimer,
+          textFieldFocusNode);
     }
     return orElse();
   }
@@ -299,13 +331,15 @@ abstract class ChatStateData implements ChatState {
       final MessageDataSource messageDataSource,
       final ChatActionStatus chatActionStatus,
       {final MessageEntity? messageEntity,
-      final String? recordProgressTimer}) = _$ChatStateDataImpl;
+      final String? recordProgressTimer,
+      final FocusNode? textFieldFocusNode}) = _$ChatStateDataImpl;
 
   TextEditingController get textEditingController;
   MessageDataSource get messageDataSource;
   ChatActionStatus get chatActionStatus;
   MessageEntity? get messageEntity;
   String? get recordProgressTimer;
+  FocusNode? get textFieldFocusNode;
   @JsonKey(ignore: true)
   _$$ChatStateDataImplCopyWith<_$ChatStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -354,7 +388,8 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -370,7 +405,8 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -386,7 +422,8 @@ class _$ChatStateLoadingImpl implements ChatStateLoading {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -508,7 +545,8 @@ class _$ChatStateErrorImpl implements ChatStateError {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -524,7 +562,8 @@ class _$ChatStateErrorImpl implements ChatStateError {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -540,7 +579,8 @@ class _$ChatStateErrorImpl implements ChatStateError {
             MessageDataSource messageDataSource,
             ChatActionStatus chatActionStatus,
             MessageEntity? messageEntity,
-            String? recordProgressTimer)?
+            String? recordProgressTimer,
+            FocusNode? textFieldFocusNode)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,

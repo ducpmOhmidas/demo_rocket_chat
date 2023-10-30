@@ -1,15 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/data/data_sources/paging/chat_data_source.dart';
-import 'package:flutter_application/data/dtos/message_dto.dart';
-import 'package:flutter_application/data/dtos/profile_dto.dart';
 import 'package:flutter_application/design_system_widgets/app_error_widget.dart';
+import 'package:flutter_application/design_system_widgets/app_loading_overlay.dart';
 import 'package:flutter_application/design_system_widgets/app_loading_widget.dart';
 import 'package:flutter_application/design_system_widgets/form_field/app_text_form_field.dart';
 import 'package:flutter_application/domain/entities/message_entity.dart';
 import 'package:flutter_application/domain/entities/room_entity.dart';
-import 'package:flutter_application/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_application/presentation/blocs/chat/chat_bloc.dart';
 import 'package:flutter_application/presentation/blocs/chat/chat_state.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/message_item_widget.dart';
@@ -56,17 +53,40 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         body: BlocConsumer<ChatBloc, ChatState>(builder: (context, state) {
           return state.when(
             (textEditingController, messageDataSource, chatActionStatus,
-                    currentMessage, recordProgressTimer) =>
+                    currentMessage, recordProgressTimer, textFieldFocusNode) =>
                 PagingListView<int, MessageEntity>.separated(
               reverse: true,
               separatorBuilder: (_, index) => SizedBox(
                 height: 16,
               ),
-              builderDelegate: PagedChildBuilderDelegate(
+              builderDelegate: PagedChildBuilderDelegate<MessageEntity>(
                 itemBuilder: (context, data, child, onUpdate, onDelete) {
-                  return MessageItemWidget(
-                    item: data,
-                    key: ValueKey(data.id),
+                  return BlocListener<ChatBloc, ChatState>(
+                    listener: (context, state) {
+                      context
+                          .read<ChatBloc>()
+                          .sendMessageToServer()
+                          .then((value) {
+                            log('onUpdate: ${value.msg} -- ${value.id}');
+                            onUpdate(value);
+
+                      });
+                    },
+                    listenWhen: (oldState, currState) {
+                      return currState
+                              .mapOrNull((value) => value.chatActionStatus) ==
+                          ChatActionStatus.edited && currState
+                          .mapOrNull((value) => value.messageEntity)?.id == data.id;
+                    },
+                    child: MessageItemWidget(
+                      item: data,
+                      key: ValueKey(data.id),
+                      onUpdate: (message) {
+                        // textFieldFocusNode?.requestFocus();
+                        context.read<ChatBloc>().edit(messageEntity: message);
+                      },
+                      onDelete: onDelete,
+                    ),
                   );
                 },
               ),
@@ -78,21 +98,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               addItemBuilder: (context, onAddItem) {
                 return BlocListener<ChatBloc, ChatState>(
                     listener: (context, state) async {
-                      overlayEntry = OverlayEntry(
-                        // Create a new OverlayEntry.
-                        builder: (BuildContext bContext) {
-                          // Align is used to position the highlight overlay
-                          // relative to the NavigationBar destination.
-                          return Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            color: Colors.black.withOpacity(0.1),
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        },
-                      );
+                      overlayEntry = AppLoadingOverlay();
                       Overlay.of(context).insert(overlayEntry!);
                       await context
                           .read<ChatBloc>()
@@ -111,6 +117,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           )
                         : AppTextFormField(
                             textEditingController: textEditingController,
+                            focusNode: textFieldFocusNode,
                             hint: 'New message',
                             suffix: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -131,10 +138,19 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                               onPressed: context.read<ChatBloc>().send,
                               icon: Icon(Icons.send),
                             ),
-                            prefix: IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.emoji_emotions_outlined),
-                            ),
+                            prefix: state.mapOrNull(
+                                        (value) => value.chatActionStatus) ==
+                                    ChatActionStatus.editing
+                                ? IconButton(
+                                    onPressed: () {
+                                      context.read<ChatBloc>().cancelEdit();
+                                    },
+                                    icon: Icon(Icons.close),
+                                  )
+                                : IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.emoji_emotions_outlined),
+                                  ),
                             onChanged: (v) {
                               log('onChanged: $v -- ${textEditingController.text}');
                             },
@@ -179,7 +195,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 await showModalBottomSheet(
                     context: context,
                     builder: (contextDialog) {
-                      return SelectFileOptionWidget(
+                      return SelectActionWidget(
                         pickFileOptions: pickFileOptions,
                       );
                     }).then((value) => context.read<ChatBloc>().closeSend());

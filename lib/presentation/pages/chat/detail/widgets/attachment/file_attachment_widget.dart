@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_file/open_file.dart';
 
-import '../../../../blocs/message/message_bloc.dart';
-import '../../../../blocs/message/message_state.dart';
+import '../../../../../blocs/message/message_bloc.dart';
+import '../../../../../blocs/message/message_state.dart';
 
 class FileAttachmentWidget extends StatefulWidget {
   const FileAttachmentWidget({Key? key}) : super(key: key);

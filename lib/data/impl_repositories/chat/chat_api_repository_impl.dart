@@ -21,4 +21,14 @@ class ChatApiRepositoryImpl implements ChatApiRepository {
   Future<MessageEntity> uploadFile(MessageEntity messageEntity) {
     return _apiDataSource.uploadFile(messageEntity);
   }
+
+  @override
+  Future<MessageEntity> deleteMessage(MessageEntity messageEntity) {
+    return _apiDataSource.deleteMessage(messageEntity);
+  }
+
+  @override
+  Future<MessageEntity> editMessage(MessageEntity messageEntity) {
+    return _apiDataSource.editMessage(messageEntity);
+  }
 }

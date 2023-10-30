@@ -14,14 +14,31 @@ enum MediaStatus {
   data,
 }
 
+enum MessageActionStatus {
+  noAction,
+  showAction,
+  copy,
+  share,
+  edit,
+  report,
+  delete,
+  completedDelete,
+  close,
+  error,
+}
+
 @freezed
 abstract class MessageState with _$MessageState {
-  const factory MessageState(MessageEntity data,
-      {File? mediaFile,
-      required MediaStatus mediaStatus,
-      VideoPlayerController? videoController,
-      ChewieController? chewieController,
-      AudioPlayer? audioController}) = MessageStateData;
+  const factory MessageState(
+    MessageEntity data, {
+    File? mediaFile,
+    required MediaStatus mediaStatus,
+    required MessageActionStatus messageActionStatus,
+    VideoPlayerController? videoController,
+    ChewieController? chewieController,
+    AudioPlayer? audioController,
+    String? errorMsg,
+  }) = MessageStateData;
   const factory MessageState.loading() = MessageStateLoading;
   const factory MessageState.error(dynamic error) = MessageStateError;
 }

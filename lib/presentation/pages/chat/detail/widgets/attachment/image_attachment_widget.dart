@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../design_system_widgets/app_loading_widget.dart';
-import '../../../../blocs/message/message_bloc.dart';
-import '../../../../blocs/message/message_state.dart';
+import '../../../../../../design_system_widgets/app_loading_widget.dart';
+import '../../../../../blocs/message/message_bloc.dart';
+import '../../../../../blocs/message/message_state.dart';
+
 
 class ImageAttachmentWidget extends StatefulWidget {
   static const path = '/image_attachment_widget';

@@ -168,16 +168,16 @@ class ApiDataSource {
     }
     final file = await MultipartFile.fromFile(filePath,
         // filename: filePath.split('/').last.split('.').first,
-        contentType: MediaType(type, subType)
-    );
+        contentType: MediaType(type, subType));
     final formData = FormData.fromMap({
       "file": file,
       'msg': messageEntity.msg,
       'description': attachment.fileDescription,
     });
     log('uploadFile: ${file.contentType?.type} -- ${file.contentType?.subtype} -- ${file.filename} -- ${file.headers} -- ${file.contentType?.parameters} -- ${formData.fields}');
-    final response = await _dio.post('/rooms.upload/${messageEntity.rid}',
-        data: formData,
+    final response = await _dio.post(
+      '/rooms.upload/${messageEntity.rid}',
+      data: formData,
     );
     if (response.statusCode == 200) {
       return MessageDto.fromJson(
@@ -187,5 +187,36 @@ class ApiDataSource {
       throw response.statusMessage ?? '';
     }
   }
+
+  Future<MessageEntity> deleteMessage(MessageEntity messageEntity) async {
+    final data = {
+      "roomId": messageEntity.rid,
+      "msgId": messageEntity.id,
+      "asUser": true
+    };
+    final response = await _dio.post('/chat.delete', data: data);
+    if (response.statusCode == 200) {
+      return MessageDto.fromJson(response.data['message']);
+    } else {
+      throw response.statusMessage ?? '';
+    }
+  }
+
+  Future<MessageEntity> editMessage(MessageEntity messageEntity) async {
+    final data = {
+      "roomId": messageEntity.rid,
+      "msgId": messageEntity.id,
+      "text": messageEntity.msg,
+      "previewUrls": []
+    };
+    final response = await _dio.post('/chat.update', data: data);
+    if (response.statusCode == 200) {
+      log('editMessage: ${response.data['message']}');
+      return MessageDto.fromJson(response.data['message']);
+    } else {
+      throw response.statusMessage ?? '';
+    }
+  }
+
   //endregion
 }

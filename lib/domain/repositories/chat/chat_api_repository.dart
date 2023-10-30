@@ -9,4 +9,8 @@ abstract class ChatApiRepository {
   Future<MessageEntity> sendMessage(MessageEntity messageEntity);
 
   Future<MessageEntity> uploadFile(MessageEntity messageEntity);
+
+  Future<MessageEntity> deleteMessage(MessageEntity messageEntity);
+
+  Future<MessageEntity> editMessage(MessageEntity messageEntity);
 }

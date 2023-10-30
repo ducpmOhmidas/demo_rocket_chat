@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/design_system_widgets/app_loading_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../../../../blocs/message/message_bloc.dart';
-import '../../../../blocs/message/message_state.dart';
+import '../../../../../blocs/message/message_bloc.dart';
+import '../../../../../blocs/message/message_state.dart';
+
 
 class AudioAttachmentWidget extends StatefulWidget {
   const AudioAttachmentWidget({Key? key, required this.audioUrl})
@@ -145,7 +145,6 @@ class _AudioAttachmentWidgetState extends State<AudioAttachmentWidget> with Auto
             SizedBox();
       }),
     );
-    ;
   }
 
   @override

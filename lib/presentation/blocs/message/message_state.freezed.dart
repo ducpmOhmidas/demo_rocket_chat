@@ -22,9 +22,11 @@ mixin _$MessageState {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)
+            AudioPlayer? audioController,
+            String? errorMsg)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -36,9 +38,11 @@ mixin _$MessageState {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -50,9 +54,11 @@ mixin _$MessageState {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -111,9 +117,11 @@ abstract class _$$MessageStateDataImplCopyWith<$Res> {
       {MessageEntity data,
       File? mediaFile,
       MediaStatus mediaStatus,
+      MessageActionStatus messageActionStatus,
       VideoPlayerController? videoController,
       ChewieController? chewieController,
-      AudioPlayer? audioController});
+      AudioPlayer? audioController,
+      String? errorMsg});
 }
 
 /// @nodoc
@@ -130,9 +138,11 @@ class __$$MessageStateDataImplCopyWithImpl<$Res>
     Object? data = null,
     Object? mediaFile = freezed,
     Object? mediaStatus = null,
+    Object? messageActionStatus = null,
     Object? videoController = freezed,
     Object? chewieController = freezed,
     Object? audioController = freezed,
+    Object? errorMsg = freezed,
   }) {
     return _then(_$MessageStateDataImpl(
       null == data
@@ -147,6 +157,10 @@ class __$$MessageStateDataImplCopyWithImpl<$Res>
           ? _value.mediaStatus
           : mediaStatus // ignore: cast_nullable_to_non_nullable
               as MediaStatus,
+      messageActionStatus: null == messageActionStatus
+          ? _value.messageActionStatus
+          : messageActionStatus // ignore: cast_nullable_to_non_nullable
+              as MessageActionStatus,
       videoController: freezed == videoController
           ? _value.videoController
           : videoController // ignore: cast_nullable_to_non_nullable
@@ -159,6 +173,10 @@ class __$$MessageStateDataImplCopyWithImpl<$Res>
           ? _value.audioController
           : audioController // ignore: cast_nullable_to_non_nullable
               as AudioPlayer?,
+      errorMsg: freezed == errorMsg
+          ? _value.errorMsg
+          : errorMsg // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -169,9 +187,11 @@ class _$MessageStateDataImpl implements MessageStateData {
   const _$MessageStateDataImpl(this.data,
       {this.mediaFile,
       required this.mediaStatus,
+      required this.messageActionStatus,
       this.videoController,
       this.chewieController,
-      this.audioController});
+      this.audioController,
+      this.errorMsg});
 
   @override
   final MessageEntity data;
@@ -180,15 +200,19 @@ class _$MessageStateDataImpl implements MessageStateData {
   @override
   final MediaStatus mediaStatus;
   @override
+  final MessageActionStatus messageActionStatus;
+  @override
   final VideoPlayerController? videoController;
   @override
   final ChewieController? chewieController;
   @override
   final AudioPlayer? audioController;
+  @override
+  final String? errorMsg;
 
   @override
   String toString() {
-    return 'MessageState(data: $data, mediaFile: $mediaFile, mediaStatus: $mediaStatus, videoController: $videoController, chewieController: $chewieController, audioController: $audioController)';
+    return 'MessageState(data: $data, mediaFile: $mediaFile, mediaStatus: $mediaStatus, messageActionStatus: $messageActionStatus, videoController: $videoController, chewieController: $chewieController, audioController: $audioController, errorMsg: $errorMsg)';
   }
 
   @override
@@ -201,17 +225,29 @@ class _$MessageStateDataImpl implements MessageStateData {
                 other.mediaFile == mediaFile) &&
             (identical(other.mediaStatus, mediaStatus) ||
                 other.mediaStatus == mediaStatus) &&
+            (identical(other.messageActionStatus, messageActionStatus) ||
+                other.messageActionStatus == messageActionStatus) &&
             (identical(other.videoController, videoController) ||
                 other.videoController == videoController) &&
             (identical(other.chewieController, chewieController) ||
                 other.chewieController == chewieController) &&
             (identical(other.audioController, audioController) ||
-                other.audioController == audioController));
+                other.audioController == audioController) &&
+            (identical(other.errorMsg, errorMsg) ||
+                other.errorMsg == errorMsg));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data, mediaFile, mediaStatus,
-      videoController, chewieController, audioController);
+  int get hashCode => Object.hash(
+      runtimeType,
+      data,
+      mediaFile,
+      mediaStatus,
+      messageActionStatus,
+      videoController,
+      chewieController,
+      audioController,
+      errorMsg);
 
   @JsonKey(ignore: true)
   @override
@@ -227,15 +263,17 @@ class _$MessageStateDataImpl implements MessageStateData {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)
+            AudioPlayer? audioController,
+            String? errorMsg)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
   }) {
-    return $default(data, mediaFile, mediaStatus, videoController,
-        chewieController, audioController);
+    return $default(data, mediaFile, mediaStatus, messageActionStatus,
+        videoController, chewieController, audioController, errorMsg);
   }
 
   @override
@@ -245,15 +283,17 @@ class _$MessageStateDataImpl implements MessageStateData {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
   }) {
-    return $default?.call(data, mediaFile, mediaStatus, videoController,
-        chewieController, audioController);
+    return $default?.call(data, mediaFile, mediaStatus, messageActionStatus,
+        videoController, chewieController, audioController, errorMsg);
   }
 
   @override
@@ -263,17 +303,19 @@ class _$MessageStateDataImpl implements MessageStateData {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(data, mediaFile, mediaStatus, videoController,
-          chewieController, audioController);
+      return $default(data, mediaFile, mediaStatus, messageActionStatus,
+          videoController, chewieController, audioController, errorMsg);
     }
     return orElse();
   }
@@ -317,16 +359,20 @@ abstract class MessageStateData implements MessageState {
   const factory MessageStateData(final MessageEntity data,
       {final File? mediaFile,
       required final MediaStatus mediaStatus,
+      required final MessageActionStatus messageActionStatus,
       final VideoPlayerController? videoController,
       final ChewieController? chewieController,
-      final AudioPlayer? audioController}) = _$MessageStateDataImpl;
+      final AudioPlayer? audioController,
+      final String? errorMsg}) = _$MessageStateDataImpl;
 
   MessageEntity get data;
   File? get mediaFile;
   MediaStatus get mediaStatus;
+  MessageActionStatus get messageActionStatus;
   VideoPlayerController? get videoController;
   ChewieController? get chewieController;
   AudioPlayer? get audioController;
+  String? get errorMsg;
   @JsonKey(ignore: true)
   _$$MessageStateDataImplCopyWith<_$MessageStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -375,9 +421,11 @@ class _$MessageStateLoadingImpl implements MessageStateLoading {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)
+            AudioPlayer? audioController,
+            String? errorMsg)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -392,9 +440,11 @@ class _$MessageStateLoadingImpl implements MessageStateLoading {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -409,9 +459,11 @@ class _$MessageStateLoadingImpl implements MessageStateLoading {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,
@@ -532,9 +584,11 @@ class _$MessageStateErrorImpl implements MessageStateError {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)
+            AudioPlayer? audioController,
+            String? errorMsg)
         $default, {
     required TResult Function() loading,
     required TResult Function(dynamic error) error,
@@ -549,9 +603,11 @@ class _$MessageStateErrorImpl implements MessageStateError {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult? Function()? loading,
     TResult? Function(dynamic error)? error,
@@ -566,9 +622,11 @@ class _$MessageStateErrorImpl implements MessageStateError {
             MessageEntity data,
             File? mediaFile,
             MediaStatus mediaStatus,
+            MessageActionStatus messageActionStatus,
             VideoPlayerController? videoController,
             ChewieController? chewieController,
-            AudioPlayer? audioController)?
+            AudioPlayer? audioController,
+            String? errorMsg)?
         $default, {
     TResult Function()? loading,
     TResult Function(dynamic error)? error,

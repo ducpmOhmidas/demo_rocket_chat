@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_application/domain/repositories/chat/chat_api_repository.dart';
 import 'package:flutter_application/domain/repositories/chat/chat_local_repository.dart';
+import 'package:flutter_application/presentation/blocs/message/message_state.dart';
 
 import '../../domain/entities/message_entity.dart';
 import '../../initialize_dependencies.dart';
@@ -54,15 +55,38 @@ class ChatService {
   }
 
   Future<MessageEntity> sendMessage(
-      {required MessageEntity messageData}) async {
-    switch (messageData.attachmentStatus) {
-      case AttachmentStatus.file:
-      case AttachmentStatus.image:
-      case AttachmentStatus.video:
-      case AttachmentStatus.audio:
-        return chatApiRepository.uploadFile(messageData);
-      default:
-        return chatApiRepository.sendMessage(messageData);
+      {required MessageEntity messageData, bool isEdit = false}) async {
+    if (isEdit) {
+      return chatApiRepository.editMessage(messageData);
+    } else {
+      switch (messageData.attachmentStatus) {
+        case AttachmentStatus.file:
+        case AttachmentStatus.image:
+        case AttachmentStatus.video:
+        case AttachmentStatus.audio:
+          return chatApiRepository.uploadFile(messageData);
+        default:
+          return chatApiRepository.sendMessage(messageData);
+      }
+    }
+  }
+
+  Future<MessageEntity> handleAction(
+      {required MessageEntity messageData,
+      required MessageActionStatus status}) async {
+    try {
+      switch (status) {
+        case MessageActionStatus.copy:
+        case MessageActionStatus.share:
+        case MessageActionStatus.edit:
+        case MessageActionStatus.report:
+        case MessageActionStatus.delete:
+          return chatApiRepository.deleteMessage(messageData);
+        default:
+          return messageData;
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }
