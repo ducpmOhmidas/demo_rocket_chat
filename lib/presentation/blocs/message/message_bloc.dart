@@ -1,15 +1,22 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/application/services/chat_service.dart';
+import 'package:flutter_application/application/services/user_service.dart';
 import 'package:flutter_application/domain/entities/message_entity.dart';
 import 'package:flutter_application/presentation/blocs/message/message_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:open_file/open_file.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 
 class MessageBloc extends Cubit<MessageState> {
-  MessageBloc({required MessageEntity data, required ChatService chatService})
+  MessageBloc(
+      {required MessageEntity data,
+      required ChatService chatService,
+      required UserService userService})
       : _chatService = chatService,
+        _userService = userService,
         super(MessageStateData(data,
             mediaStatus: MediaStatus.init,
             messageActionStatus: MessageActionStatus.noAction)) {
@@ -17,6 +24,7 @@ class MessageBloc extends Cubit<MessageState> {
   }
 
   final ChatService _chatService;
+  final UserService _userService;
 
   @override
   Future<void> close() {
@@ -54,8 +62,7 @@ class MessageBloc extends Cubit<MessageState> {
   }
 
   updateMessage({required MessageEntity messageEntity}) {
-    emit(state.maybeMap(
-            (value) => value.copyWith(data: messageEntity),
+    emit(state.maybeMap((value) => value.copyWith(data: messageEntity),
         orElse: () => state));
   }
 
@@ -112,10 +119,11 @@ class MessageBloc extends Cubit<MessageState> {
   //region handle action
 
   void initAction() {
-    final messageActionStatus = state.mapOrNull((value) => value.messageActionStatus);
+    final messageActionStatus =
+        state.mapOrNull((value) => value.messageActionStatus);
     if (messageActionStatus != MessageActionStatus.noAction) {
       emit(state.mapOrNull((value) => value.copyWith(
-          messageActionStatus: MessageActionStatus.noAction)) ??
+              messageActionStatus: MessageActionStatus.noAction)) ??
           state);
     }
   }
@@ -126,11 +134,58 @@ class MessageBloc extends Cubit<MessageState> {
         state);
   }
 
-  void copy() {}
+  Future copy() async {
+    final messageData = state.mapOrNull((value) => value.data);
+    if (messageData?.attachmentStatus == AttachmentStatus.none) {
+      await Clipboard.setData(ClipboardData(text: messageData?.msg ?? ''));
+    } else {
+      await Clipboard.setData(ClipboardData(
+          text: messageData?.attachments?.first.fileDescription ?? ''));
+    }
+    closeAction();
+  }
 
-  Future share() async {}
+  Future share() async {
+    final messageData = state.mapOrNull((value) => value.data);
+    if (messageData?.attachmentStatus == AttachmentStatus.none) {
+      await Share.share(
+        messageData?.msg ?? '',
+      );
+    } else {
+      final mediaFile = await _chatService.getMedia(
+          url: messageData!.attachments!.first.titleLink!,
+          status: AttachmentStatus.file);
+      await Share.shareXFiles(
+        [XFile(mediaFile.path)],
+        text: messageData.attachments?.first.fileDescription,
+        subject: messageData.msg ?? '',
+      );
+    }
+    closeAction();
+  }
 
   Future edit() async {}
+
+  Future report() async {
+    final messageData = state.mapOrNull((value) => value.data);
+    if (messageData != null) {
+      emit(state.mapOrNull((value) => value.copyWith(
+              messageActionStatus: MessageActionStatus.report)) ??
+          state);
+      _chatService
+          .handleAction(
+              messageData: messageData, status: MessageActionStatus.report)
+          .then((value) => emit(state.mapOrNull((value) => value.copyWith(
+                  messageActionStatus: MessageActionStatus.completedReport)) ??
+              state))
+          .onError((error, stackTrace) => emit(state.mapOrNull(
+                (value) => value.copyWith(
+                    messageActionStatus: MessageActionStatus.error,
+                    errorMsg: error.toString()),
+              ) ??
+              state));
+    }
+  }
 
   Future delete() async {
     final messageData = state.mapOrNull((value) => value.data);
@@ -154,10 +209,11 @@ class MessageBloc extends Cubit<MessageState> {
   }
 
   void closeAction() {
-    final messageActionStatus = state.mapOrNull((value) => value.messageActionStatus);
+    final messageActionStatus =
+        state.mapOrNull((value) => value.messageActionStatus);
     if (messageActionStatus != MessageActionStatus.close) {
-      emit(state.mapOrNull((value) => value.copyWith(
-          messageActionStatus: MessageActionStatus.close)) ??
+      emit(state.mapOrNull((value) =>
+              value.copyWith(messageActionStatus: MessageActionStatus.close)) ??
           state);
     }
   }

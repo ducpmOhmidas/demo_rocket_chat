@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RoomBloc extends Cubit<RoomState> {
   RoomBloc(
       {required RoomRepository roomRepository,
-      required LocalService localService})
+      required LocalService localService,})
       : _roomRepository = roomRepository,
         _localService = localService,
         super(RoomState.loading()) {

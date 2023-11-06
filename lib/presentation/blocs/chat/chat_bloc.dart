@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/ConnectSocketManager.dart';
 import 'package:flutter_application/application/services/chat_service.dart';
 import 'package:flutter_application/application/services/local_service.dart';
 import 'package:flutter_application/data/data_sources/paging/chat_data_source.dart';
@@ -20,6 +22,8 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import '../../../domain/entities/message_entity.dart';
 import '../../../domain/entities/room_entity.dart';
 
+import '../../../initialize_dependencies.dart';
+
 class ChatBloc extends Cubit<ChatState> {
   ChatBloc(
       {required LocalService localService,
@@ -33,7 +37,17 @@ class ChatBloc extends Cubit<ChatState> {
             MessageDataSource(
                 roomId: roomEntity.id, roomType: roomEntity.type ?? 'c'),
             ChatActionStatus.init,
-            textFieldFocusNode: FocusNode()));
+            ChatActionStatus.init,
+            textFieldFocusNode: FocusNode())) {
+    log('stream-room-messages init');
+    final socketManageer = sl.get<ConnectSocketManager>();
+    messageStreamSubscription =
+        socketManageer.watchRoomMessages(roomId: roomEntity.id).listen((event) {
+      for (var e in event) {
+        realtimeAddMessage(messageEntity: e);
+      }
+    });
+  }
 
   LocalService _localService;
   ChatService _chatService;
@@ -41,6 +55,13 @@ class ChatBloc extends Cubit<ChatState> {
   FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   Codec _codec = Codec.aacMP4;
+  late final StreamSubscription messageStreamSubscription;
+
+  @override
+  Future<void> close() {
+    messageStreamSubscription.cancel();
+    return super.close();
+  }
 
   void init() {
     emit(state.mapOrNull((value) => value.copyWith(
@@ -120,11 +141,13 @@ class ChatBloc extends Cubit<ChatState> {
         id: currentMessage?.id ?? DateTime.now().hashCode.toString(),
         rid: currentMessage?.rid ?? _roomEntity.id,
         mentionsRM: currentMessage?.userMentions
-            ?.map((e) => ProfileDto(e.name, e.id))
+            ?.map((e) => ProfileDto(e.name, e.id, e.userName))
             .toList(),
         msg: currentMessage?.msg,
-        userInforRM: ProfileDto(currentMessage?.userInfor?.name,
-            currentMessage?.userInfor?.id ?? ''),
+        userInforRM: ProfileDto(
+            currentMessage?.userInfor?.name,
+            currentMessage?.userInfor?.id ?? '',
+            currentMessage?.userInfor?.userName),
         attachmentsRM: currentMessage?.attachments
             ?.map((e) => AttachmentDto(
                 id: e.id,
@@ -264,10 +287,11 @@ class ChatBloc extends Cubit<ChatState> {
         ? init()
         : closeSend();
     textEditingController?.clear();
+    state.mapOrNull((value) => value.textFieldFocusNode)?.unfocus();
     return message;
   }
 
-  Future send({String? description}) async {
+  Future send({String? description, bool updateLocal = false}) async {
     final currentMessage = getMessageDto();
     final chatActionStatus = state.mapOrNull((value) => value.chatActionStatus);
     if (chatActionStatus == ChatActionStatus.editing) {
@@ -311,6 +335,37 @@ class ChatBloc extends Cubit<ChatState> {
           break;
       }
     }
+  }
+  //endregion
+
+  //region update Local
+  void realtimeAddMessage({required MessageEntity messageEntity}) {
+    log('realtimeAddMessage: $messageEntity');
+    // state.mapOrNull((value) => value.messageDataSource).
+    emit(state.mapOrNull((value) => value.copyWith(
+            realtimeChatActionStatus: messageEntity.isEdit
+                ? ChatActionStatus.realtimeUpdate
+                : ChatActionStatus.realtimeAdd,
+            realtimeMessageEntity: messageEntity)) ??
+        state);
+    Future.delayed((Duration(milliseconds: 10)), () {
+      emit(state.mapOrNull((value) => value.copyWith(
+              realtimeChatActionStatus: ChatActionStatus.realtimeDone)) ??
+          state);
+    });
+  }
+
+  void realtimeUpdateMessage({required MessageEntity messageEntity}) {
+    log('realtimeAddMessage: $messageEntity');
+    emit(state.mapOrNull((value) => value.copyWith(
+            chatActionStatus: ChatActionStatus.realtimeUpdate,
+            realtimeMessageEntity: messageEntity)) ??
+        state);
+    Future.delayed((Duration(milliseconds: 10)), () {
+      emit(state.mapOrNull((value) => value.copyWith(
+              chatActionStatus: ChatActionStatus.realtimeDone)) ??
+          state);
+    });
   }
   //endregion
 

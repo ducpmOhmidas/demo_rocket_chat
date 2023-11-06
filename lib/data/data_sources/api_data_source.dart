@@ -36,6 +36,8 @@ class ApiDataSource {
     throw UnimplementedError();
   }
 
+  //region user
+
   Future<ProfileEntity> profile({required String userId}) async {
     final queryParameters = {
       'userId': userId,
@@ -48,6 +50,24 @@ class ApiDataSource {
       throw response.statusMessage ?? '';
     }
   }
+
+  Future<String> downloadAvatar(
+      {required String userId, required String savePath}) async {
+    final queryParameters = {
+      'userId': userId,
+    };
+    final response = await _dio.get('/users.getAvatar',
+        queryParameters: queryParameters);
+    if (response.statusCode == 200) {
+      log('downloadAvatar: ${response.data}');
+
+      return response.data.toString();
+    } else {
+      throw response.statusMessage ?? '';
+    }
+  }
+
+  //endregion
 
   //region storage
   @override
@@ -213,6 +233,20 @@ class ApiDataSource {
     if (response.statusCode == 200) {
       log('editMessage: ${response.data['message']}');
       return MessageDto.fromJson(response.data['message']);
+    } else {
+      throw response.statusMessage ?? '';
+    }
+  }
+
+  Future<bool> reportMessage(
+      {required messageId, required String description}) async {
+    final data = {
+      "messageId": messageId,
+      "description": description,
+    };
+    final response = await _dio.post('/chat.reportMessage', data: data);
+    if (response.statusCode == 200) {
+      return true;
     } else {
       throw response.statusMessage ?? '';
     }

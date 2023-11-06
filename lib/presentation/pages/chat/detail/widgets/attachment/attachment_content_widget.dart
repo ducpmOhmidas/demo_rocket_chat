@@ -32,8 +32,10 @@ class AttachmentContentWidget extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 160,
-              color: Colors.red,
-              child:  ImageAttachmentWidget(width: double.infinity, height: double.infinity,)
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: ImageAttachmentWidget(width: double.infinity, height: double.infinity,),
+              )
             )
           ],
         );
@@ -43,9 +45,12 @@ class AttachmentContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(file.fileDescription ?? ''),
-            VideoAttachmentWidget(
-              key: ValueKey(item.id),
-                videoUrl: item.attachments!.first.videoUrl!),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: VideoAttachmentWidget(
+                  key: ValueKey(item.id),
+                  videoUrl: item.attachments!.first.videoUrl!),
+            ),
           ],
         );
       case AttachmentStatus.audio:

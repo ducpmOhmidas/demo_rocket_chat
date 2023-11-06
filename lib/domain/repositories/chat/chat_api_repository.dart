@@ -13,4 +13,6 @@ abstract class ChatApiRepository {
   Future<MessageEntity> deleteMessage(MessageEntity messageEntity);
 
   Future<MessageEntity> editMessage(MessageEntity messageEntity);
+
+  Future<bool> reportMessage({required messageId, required String description});
 }

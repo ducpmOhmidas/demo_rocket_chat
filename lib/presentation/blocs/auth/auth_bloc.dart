@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter_application/application/services/auth_service.dart';
 import 'package:flutter_application/application/services/local_service.dart';
 import 'package:flutter_application/data/dtos/authentication_dto.dart';
@@ -9,7 +12,9 @@ import 'package:flutter_application/utils/cache.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../ConnectSocketManager.dart';
 import '../../../initialize_dependencies.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class AuthBloc extends Cubit<AuthState> {
   AuthBloc() : super(AuthState.unAuthorized());
@@ -42,6 +47,8 @@ class AuthBloc extends Cubit<AuthState> {
 
   Future initializeApp() async {
     final auth = localService.getAuthenticationDto();
+    final socket = sl.get<ConnectSocketManager>();
+    socket.on('connect', (p0) => log('ConnectSocketManager: ${socket.connected}'));
     final profile = await authService.profile(userId: auth!.userId);
     Cache.profile = profile;
     emit(AuthState.authorized(profile));

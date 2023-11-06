@@ -73,13 +73,17 @@ class ChatService {
 
   Future<MessageEntity> handleAction(
       {required MessageEntity messageData,
-      required MessageActionStatus status}) async {
+      required MessageActionStatus status,
+      String? description}) async {
     try {
       switch (status) {
         case MessageActionStatus.copy:
         case MessageActionStatus.share:
         case MessageActionStatus.edit:
         case MessageActionStatus.report:
+          await chatApiRepository.reportMessage(
+              messageId: messageData.id, description: description ?? '');
+          return messageData;
         case MessageActionStatus.delete:
           return chatApiRepository.deleteMessage(messageData);
         default:

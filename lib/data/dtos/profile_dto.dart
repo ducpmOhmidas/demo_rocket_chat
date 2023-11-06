@@ -10,7 +10,7 @@ class ProfileDto extends ProfileEntity {
 
   Map<String, dynamic> toJson() => _$ProfileDtoToJson(this);
 
-  ProfileDto(this.name, this.id);
+  ProfileDto(this.name, this.id, this.userName);
 
   @override
   String? name;
@@ -29,4 +29,8 @@ class ProfileDto extends ProfileEntity {
   @override
   @JsonKey(name: '_id')
   String id;
+
+  @override
+  @JsonKey(name: 'username')
+  String? userName;
 }

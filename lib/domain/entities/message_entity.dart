@@ -15,7 +15,10 @@ abstract class MessageEntity {
   String? get rid;
 
   String? msg;
-  String? updatedAt;
+
+  String get updatedAt;
+
+  dynamic editedAt;
 
   List<ProfileEntity>? get userMentions;
 
@@ -24,4 +27,6 @@ abstract class MessageEntity {
   List<AttachmentEntity>? get attachments;
 
   AttachmentStatus get attachmentStatus;
+
+  bool get isEdit => editedAt != null;
 }

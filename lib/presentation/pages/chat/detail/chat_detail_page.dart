@@ -10,6 +10,7 @@ import 'package:flutter_application/domain/entities/room_entity.dart';
 import 'package:flutter_application/presentation/blocs/chat/chat_bloc.dart';
 import 'package:flutter_application/presentation/blocs/chat/chat_state.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/message_item_widget.dart';
+import 'package:flutter_application/presentation/pages/chat/detail/widgets/message_separator_widget.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/record_widget.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/select_file_option_widget.dart';
 import 'package:flutter_application/presentation/pages/chat/detail/widgets/sending_file_widget.dart';
@@ -52,41 +53,112 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         ),
         body: BlocConsumer<ChatBloc, ChatState>(builder: (context, state) {
           return state.when(
-            (textEditingController, messageDataSource, chatActionStatus,
-                    currentMessage, recordProgressTimer, textFieldFocusNode) =>
+            (textEditingController,
+                    messageDataSource,
+                    chatActionStatus,
+                    realtimeChatActionStatus,
+                    currentMessage,
+                    recordProgressTimer,
+                    textFieldFocusNode,
+                    realtimeMessage) =>
                 PagingListView<int, MessageEntity>.separated(
               reverse: true,
-              separatorBuilder: (_, index) => SizedBox(
-                height: 16,
-              ),
+              separatorBuilder: (_, index, item, items) {
+                if (index < items.length - 1) {
+                  final nextItem = items[index + 1];
+                  if (DateTime.parse(nextItem.updatedAt).day !=
+                      DateTime.parse(item.updatedAt).day) {
+                    return MessageSeparatorWidget(date: item.updatedAt);
+                  } else {
+                    return SizedBox(
+                      height: 8,
+                    );
+                  }
+                } else {
+                  return MessageSeparatorWidget(date: item.updatedAt);
+                }
+              },
               builderDelegate: PagedChildBuilderDelegate<MessageEntity>(
-                itemBuilder: (context, data, child, onUpdate, onDelete) {
+                itemBuilder:
+                    (context, data, child, onUpdate, onDelete, dataList) {
+                  final index = dataList.indexOf(data);
+                  final isEndList = index == dataList.length - 1;
+                  final continuous = !isEndList &&
+                      data.attachmentStatus == AttachmentStatus.none &&
+                      DateTime.parse(data.updatedAt).millisecondsSinceEpoch -
+                              DateTime.parse(dataList[index + 1].updatedAt)
+                                  .millisecondsSinceEpoch <
+                          600000;
                   return BlocListener<ChatBloc, ChatState>(
                     listener: (context, state) {
-                      context
-                          .read<ChatBloc>()
-                          .sendMessageToServer()
-                          .then((value) {
-                            log('onUpdate: ${value.msg} -- ${value.id}');
-                            onUpdate(value);
-
-                      });
+                      if (state.mapOrNull((value) => value.chatActionStatus) ==
+                          ChatActionStatus.edited) {
+                        context
+                            .read<ChatBloc>()
+                            .sendMessageToServer()
+                            .then((value) {
+                          log('onUpdate: ${value.msg} -- ${value.id}');
+                          onUpdate(value);
+                        });
+                      }
+                      if (state.mapOrNull(
+                              (value) => value.realtimeChatActionStatus) ==
+                          ChatActionStatus.realtimeUpdate) {
+                        final updateMessage = context
+                            .read<ChatBloc>()
+                            .state
+                            .mapOrNull((value) => value.realtimeMessageEntity)!;
+                        log('onUpdate: ${updateMessage.msg} -- ${updateMessage.id}');
+                        onUpdate(updateMessage);
+                      }
                     },
                     listenWhen: (oldState, currState) {
-                      return currState
-                              .mapOrNull((value) => value.chatActionStatus) ==
-                          ChatActionStatus.edited && currState
-                          .mapOrNull((value) => value.messageEntity)?.id == data.id;
+                      return (currState.mapOrNull(
+                                      (value) => value.chatActionStatus) ==
+                                  ChatActionStatus.edited &&
+                              currState
+                                      .mapOrNull((value) => value.messageEntity)
+                                      ?.id ==
+                                  data.id) ||
+                          (currState.mapOrNull((value) =>
+                                      value.realtimeChatActionStatus) ==
+                                  ChatActionStatus.realtimeUpdate &&
+                              currState
+                                      .mapOrNull((value) =>
+                                          value.realtimeMessageEntity)
+                                      ?.id ==
+                                  data.id);
                     },
-                    child: MessageItemWidget(
-                      item: data,
-                      key: ValueKey(data.id),
-                      onUpdate: (message) {
-                        // textFieldFocusNode?.requestFocus();
-                        context.read<ChatBloc>().edit(messageEntity: message);
-                      },
-                      onDelete: onDelete,
-                    ),
+                    child: isEndList
+                        ? Column(
+                            children: [
+                              MessageSeparatorWidget(date: data.updatedAt),
+                              MessageItemWidget(
+                                item: data,
+                                key: ValueKey(data.id),
+                                onUpdate: (message) {
+                                  // textFieldFocusNode?.requestFocus();
+                                  context
+                                      .read<ChatBloc>()
+                                      .edit(messageEntity: message);
+                                },
+                                onDelete: onDelete,
+                                continuous: continuous,
+                              ),
+                            ],
+                          )
+                        : MessageItemWidget(
+                            item: data,
+                            key: ValueKey(data.id),
+                            onUpdate: (message) {
+                              // textFieldFocusNode?.requestFocus();
+                              context
+                                  .read<ChatBloc>()
+                                  .edit(messageEntity: message);
+                            },
+                            onDelete: onDelete,
+                            continuous: continuous,
+                          ),
                   );
                 },
               ),
@@ -98,17 +170,39 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               addItemBuilder: (context, onAddItem) {
                 return BlocListener<ChatBloc, ChatState>(
                     listener: (context, state) async {
-                      overlayEntry = AppLoadingOverlay();
-                      Overlay.of(context).insert(overlayEntry!);
-                      await context
-                          .read<ChatBloc>()
-                          .sendMessageToServer()
-                          .then((value) => onAddItem(value));
+                      if (state.mapOrNull((value) => value.chatActionStatus) ==
+                          ChatActionStatus.send) {
+                        overlayEntry = AppLoadingOverlay();
+                        Overlay.of(context).insert(overlayEntry!);
+                        await context
+                            .read<ChatBloc>()
+                            .sendMessageToServer()
+                            .then((value) => onAddItem(value));
+                      }
+                      if (state.mapOrNull(
+                              (value) => value.realtimeChatActionStatus) ==
+                          ChatActionStatus.realtimeAdd) {
+                        final updateMessage = context
+                            .read<ChatBloc>()
+                            .state
+                            .mapOrNull((value) => value.realtimeMessageEntity)!;
+                        onAddItem(updateMessage);
+                      }
                     },
                     listenWhen: (oldState, currState) {
-                      return currState
-                              .mapOrNull((value) => value.chatActionStatus) ==
-                          ChatActionStatus.send;
+                      final oldStatus =
+                          oldState.mapOrNull((value) => value.chatActionStatus);
+                      final currStatus = currState
+                          .mapOrNull((value) => value.chatActionStatus);
+                      final realtimeOldStatus = oldState
+                          .mapOrNull((value) => value.realtimeChatActionStatus);
+                      final realtimeCurrStatus = currState
+                          .mapOrNull((value) => value.realtimeChatActionStatus);
+                      return (oldStatus != currStatus &&
+                              currStatus == ChatActionStatus.send) ||
+                          (realtimeOldStatus != realtimeCurrStatus &&
+                              realtimeCurrStatus ==
+                                  ChatActionStatus.realtimeAdd);
                     },
                     child: (chatActionStatus == ChatActionStatus.recordAudio)
                         ? RecordWidget(
@@ -194,9 +288,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 ];
                 await showModalBottomSheet(
                     context: context,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
                     builder: (contextDialog) {
                       return SelectActionWidget(
                         pickFileOptions: pickFileOptions,
+                        height: 240,
                       );
                     }).then((value) => context.read<ChatBloc>().closeSend());
                 break;
@@ -205,7 +302,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               case ChatActionStatus.sendingFile:
                 await showModalBottomSheet(
                     context: context,
-                    isScrollControlled: true,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(20),

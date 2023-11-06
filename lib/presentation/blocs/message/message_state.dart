@@ -23,6 +23,7 @@ enum MessageActionStatus {
   report,
   delete,
   completedDelete,
+  completedReport,
   close,
   error,
 }
@@ -38,6 +39,7 @@ abstract class MessageState with _$MessageState {
     ChewieController? chewieController,
     AudioPlayer? audioController,
     String? errorMsg,
+    File? userAvatar,
   }) = MessageStateData;
   const factory MessageState.loading() = MessageStateLoading;
   const factory MessageState.error(dynamic error) = MessageStateError;

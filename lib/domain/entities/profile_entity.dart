@@ -3,5 +3,7 @@ abstract class ProfileEntity {
 
   String? get name;
 
+  String? userName;
+
   String? email;
 }

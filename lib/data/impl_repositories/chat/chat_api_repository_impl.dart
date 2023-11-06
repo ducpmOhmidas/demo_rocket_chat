@@ -31,4 +31,11 @@ class ChatApiRepositoryImpl implements ChatApiRepository {
   Future<MessageEntity> editMessage(MessageEntity messageEntity) {
     return _apiDataSource.editMessage(messageEntity);
   }
+
+  @override
+  Future<bool> reportMessage(
+      {required messageId, required String description}) {
+    return _apiDataSource.reportMessage(
+        messageId: messageId, description: 'description');
+  }
 }

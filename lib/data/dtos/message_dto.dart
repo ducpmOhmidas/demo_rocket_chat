@@ -1,6 +1,7 @@
 import 'package:flutter_application/data/dtos/attachment_dto.dart';
 import 'package:flutter_application/data/dtos/profile_dto.dart';
 import 'package:flutter_application/domain/entities/message_entity.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/attachment_entity.dart';
@@ -23,6 +24,9 @@ class MessageDto extends MessageEntity {
     this.userInforRM,
     this.attachmentsRM,
   });
+
+  final formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+  final RegExp regex = RegExp(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$');
 
   @override
   @JsonKey(name: '_id')
@@ -47,9 +51,20 @@ class MessageDto extends MessageEntity {
   @override
   String? msg;
 
-  @override
   @JsonKey(name: '_updatedAt')
-  String? get updatedAt;
+  dynamic updatedAtRM;
+
+  @override
+  String get updatedAt {
+    if (regex.hasMatch(updatedAtRM.toString())) {
+      return updatedAtRM;
+    } else {
+      return formatter
+          .format(DateTime.fromMillisecondsSinceEpoch(updatedAtRM['\$date']));
+    }
+  }
+
+  dynamic get editedAt;
 
   @JsonKey(name: 'u')
   ProfileDto? userInforRM;
@@ -78,12 +93,10 @@ class MessageDto extends MessageEntity {
   @override
   AttachmentStatus get attachmentStatus {
     if (attachments != null && attachments!.isNotEmpty) {
-      if (
-          attachments!.first.imageUrl != null) {
+      if (attachments!.first.imageUrl != null) {
         return AttachmentStatus.image;
       }
-      if (
-          attachments!.first.videoUrl != null) {
+      if (attachments!.first.videoUrl != null) {
         return AttachmentStatus.video;
       }
       if (attachments!.first.audioUrl != null) {

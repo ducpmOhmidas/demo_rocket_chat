@@ -15,7 +15,10 @@ enum ChatActionStatus {
   send,
   editing,
   edited,
-  close
+  realtimeAdd,
+  realtimeUpdate,
+  realtimeDone,
+  close,
 }
 
 @freezed
@@ -23,10 +26,12 @@ abstract class ChatState with _$ChatState {
   const factory ChatState(
     TextEditingController textEditingController,
     MessageDataSource messageDataSource,
-    ChatActionStatus chatActionStatus, {
+    ChatActionStatus chatActionStatus,
+    ChatActionStatus realtimeChatActionStatus, {
     MessageEntity? messageEntity,
     String? recordProgressTimer,
-    FocusNode? textFieldFocusNode
+    FocusNode? textFieldFocusNode,
+    MessageEntity? realtimeMessageEntity,
   }) = ChatStateData;
   const factory ChatState.loading() = ChatStateLoading;
   const factory ChatState.error(dynamic error) = ChatStateError;

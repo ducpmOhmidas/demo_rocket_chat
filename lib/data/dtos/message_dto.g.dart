@@ -19,7 +19,9 @@ MessageDto _$MessageDtoFromJson(Map<String, dynamic> json) => MessageDto(
       attachmentsRM: (json['attachments'] as List<dynamic>?)
           ?.map((e) => AttachmentDto.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )..updatedAt = json['_updatedAt'] as String?;
+    )
+      ..updatedAtRM = json['_updatedAt']
+      ..editedAt = json['editedAt'];
 
 Map<String, dynamic> _$MessageDtoToJson(MessageDto instance) =>
     <String, dynamic>{
@@ -27,7 +29,8 @@ Map<String, dynamic> _$MessageDtoToJson(MessageDto instance) =>
       'rid': instance.rid,
       'mentions': instance.mentionsRM,
       'msg': instance.msg,
-      '_updatedAt': instance.updatedAt,
+      '_updatedAt': instance.updatedAtRM,
+      'editedAt': instance.editedAt,
       'u': instance.userInforRM,
       'attachments': instance.attachmentsRM,
     };

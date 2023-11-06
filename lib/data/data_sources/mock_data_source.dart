@@ -11,7 +11,7 @@ class MockDataSource {
   Future logout() async {}
 
   Future<ProfileEntity> profile() async {
-    return ProfileDto('duc', 'id');
+    return ProfileDto('duc', 'id', '');
   }
 
   Future<String> defaultData() async {

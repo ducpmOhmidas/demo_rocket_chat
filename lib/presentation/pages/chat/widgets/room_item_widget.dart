@@ -20,8 +20,13 @@ class RoomItemWidget extends StatelessWidget {
       },
       child: Row(
         children: [
-          AppImageWidget(
-            url: '',
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: AppImageWidget(
+              url: '/avatar/${item.name}?format=png',
+              width: 40,
+              height: 40,
+            ),
           ),
           const SizedBox(
             width: 8,

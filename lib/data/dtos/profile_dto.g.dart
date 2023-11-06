@@ -9,6 +9,7 @@ part of 'profile_dto.dart';
 ProfileDto _$ProfileDtoFromJson(Map<String, dynamic> json) => ProfileDto(
       json['name'] as String?,
       json['_id'] as String,
+      json['username'] as String?,
     )
       ..email = json['email'] as String?
       ..emails = (json['emails'] as List<dynamic>?)
@@ -21,4 +22,5 @@ Map<String, dynamic> _$ProfileDtoToJson(ProfileDto instance) =>
       'email': instance.email,
       'emails': instance.emails,
       '_id': instance.id,
+      'username': instance.userName,
     };
