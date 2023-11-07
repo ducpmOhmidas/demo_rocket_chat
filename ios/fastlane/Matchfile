@@ -1,6 +1,5 @@
 git_url(ENV["CER_GIT_URL"])
 git_basic_authorization(ENV["GIT_AUTHORIZATION"])
-readonly(true)
 storage_mode("git")
 
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
