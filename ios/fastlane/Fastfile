@@ -15,17 +15,6 @@
 
 default_platform(:ios)
 
-DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"]
-DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
-PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
-TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
-TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
-APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
-APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
-APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
-GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
-APPLE_KEY_PATH = ENV["APPLE_KEY_PATH"]
-
 def delete_temp_keychain(name)
   delete_keychain(
     name: name
@@ -49,6 +38,16 @@ end
 platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
+  DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"]
+  DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
+  PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"]
+  TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
+  TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
+  APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
+  APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
+  APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
+  GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
+  APPLE_KEY_PATH = ENV["APPLE_KEY_PATH"]
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
     ensure_temp_keychain(keychain_name, keychain_password)
@@ -84,7 +83,7 @@ platform :ios do
         signingStyle: "manual"
       },
       clean: true,
-      output_name: "mainichi_app.ipa",       # specify the name of the .ipa file to generate (including file extension)
+      output_name: "app.ipa",       # specify the name of the .ipa file to generate (including file extension)
       codesigning_identity: "Apple Distribution: MIDAS INC",
     )
     upload_to_testflight
