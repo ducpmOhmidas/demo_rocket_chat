@@ -70,7 +70,6 @@ platform :ios do
       api_key: api_key,
       readonly: is_ci
     )
-    
     xcode_select("./Applications/Xcode.app")
     xcodes(version: "15.0.1", select_for_current_build_only: true)
     gym(
