@@ -47,6 +47,7 @@ platform :ios do
   APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
   APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
   GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
+  CER_GIT_URL = ENV["CER_GIT_URL"]
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
     ensure_temp_keychain(keychain_name, keychain_password)
@@ -60,6 +61,7 @@ platform :ios do
     )
     increment_build_number(xcodeproj: "./Runner.xcodeproj")
     match(
+      git_url: CER_GIT_URL,
       type: "appstore",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
       git_basic_authorization: GIT_AUTHORIZATION,
