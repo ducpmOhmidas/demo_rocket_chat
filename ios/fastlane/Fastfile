@@ -71,6 +71,7 @@ platform :ios do
       readonly: is_ci
     )
     xcode_select("./Applications/Xcode.app")
+    
     xcodes(version: "15.0.1", select_for_current_build_only: true)
     gym(
       configuration: "Release",
