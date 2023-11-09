@@ -23,6 +23,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Deploy iOS Beta to TestFlight via Fastlane
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: beta
         env:
           APP_STORE_CONNECT_TEAM_ID: ${{ secrets.DEVELOPER_APP_ID }}
           DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
@@ -54,4 +57,3 @@ jobs:
             echo "CER_GIT_URL=#{CER_GIT_URL}" >> GITHUB_OUTPUT
             echo "TEMP_KEYCHAIN_USER=#{TEMP_KEYCHAIN_USER}" >> GITHUB_OUTPUT
             echo "TEMP_KEYCHAIN_PASSWORD=#{TEMP_KEYCHAIN_PASSWORD}" >> GITHUB_OUTPUT
-            cd ios && fastlane beta
