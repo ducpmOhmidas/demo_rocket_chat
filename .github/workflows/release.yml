@@ -22,11 +22,6 @@ jobs:
           xcode-version: 15.0.1
       - name: Checkout repository
         uses: actions/checkout@v1
-      - name: init flutter action
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          architecture: x64
       - name: Deploy iOS Beta to TestFlight via Fastlane
         env:
           APP_STORE_CONNECT_TEAM_ID: ${{ secrets.DEVELOPER_APP_ID }}

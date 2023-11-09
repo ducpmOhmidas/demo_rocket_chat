@@ -30,6 +30,7 @@ platform :ios do
   CER_GIT_URL = ENV["CER_GIT_URL"]
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
+    setup_circle_ci
     api_key = app_store_connect_api_key(
       key_id: APPLE_KEY_ID,
       issuer_id: APPLE_ISSUER_ID,
@@ -39,17 +40,14 @@ platform :ios do
       is_key_content_base64: true
     )
     increment_build_number(xcodeproj: "./Runner.xcodeproj")
-    import_certificate(
-        keychain_name: keychain_name,
-        keychain_path: "/Users/ducphan/Library/Keychains/",
-        keychain_password: keychain_password
-    )
     match(
       git_url: "#{CER_GIT_URL}",
       type: "appstore",
       app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
       git_basic_authorization: GIT_AUTHORIZATION,
       readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password,
       api_key: api_key,
       readonly: is_ci
     )
