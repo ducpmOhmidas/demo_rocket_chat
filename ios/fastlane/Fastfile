@@ -29,6 +29,7 @@ platform :ios do
   GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
   CER_GIT_URL = ENV["CER_GIT_URL"]
   DEVELOPER_PORTAL_TEAM_ID = ENV["DEVELOPER_PORTAL_TEAM_ID"]
+  CODE_SIGN_IDENTITY = ENV["CODE_SIGN_IDENTITY"]
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
     api_key = app_store_connect_api_key(
@@ -59,7 +60,7 @@ platform :ios do
       project: "Runner.xcodeproj",
       scheme: "Runner",
       skip_codesigning: true,
-      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID} PROVISIONING_PROFILE_SPECIFIER=#{PROVISIONING_PROFILE_SPECIFIER} CODE_SIGN_IDENTITY='Apple Distribution'"
+      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID} PROVISIONING_PROFILE_SPECIFIER=#{PROVISIONING_PROFILE_SPECIFIER} CODE_SIGN_IDENTITY=#{CODE_SIGN_IDENTITY}"
     )
     upload_to_testflight(
         api_key: api_key,
