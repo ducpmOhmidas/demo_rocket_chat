@@ -1,0 +1,18 @@
+# Automatically generated on 2020-08-03 UTC from https://codemagic.io/app/5bfd5219c59a4f0009fc6c50/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  default-workflow:
+    name: Default Workflow
+    environment:
+      groups:
+        - ios
+      xcode: 15.0.1
+      cocoapods: default
+    scripts:
+      # - gem install bundler:2.2.27
+      - bundle install
+      - bundle exec fastlane beta
+    artifacts:
+      - ./*.ipa
+      - ./*.dSYM.zip
