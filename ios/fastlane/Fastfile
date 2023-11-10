@@ -55,6 +55,7 @@ platform :ios do
     gym(
       project: "Runner.xcodeproj",
       scheme: "Runner",
+      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID}"
     )
     upload_to_testflight(
         api_key: api_key,
