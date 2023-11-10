@@ -10,6 +10,12 @@ workflows:
       xcode: 15.0.1
       cocoapods: default
     scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Install pods
+        script: |
+          find . -name "Podfile" -execdir pod install \;
       # - gem install bundler:2.2.27
       - cd ios && bundle install
       - cd ios && bundle exec fastlane beta
