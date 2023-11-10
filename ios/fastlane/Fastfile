@@ -59,7 +59,7 @@ platform :ios do
       project: "Runner.xcodeproj",
       scheme: "Runner",
       skip_codesigning: true,
-      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID} PROVISIONING_PROFILE_SPECIFIER=#{PROVISIONING_PROFILE_SPECIFIER}"
+      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID} PROVISIONING_PROFILE_SPECIFIER=#{PROVISIONING_PROFILE_SPECIFIER} CODE_SIGN_IDENTITY='Apple Distribution'"
     )
     upload_to_testflight(
         api_key: api_key,
