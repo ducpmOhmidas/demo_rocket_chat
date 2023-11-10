@@ -54,10 +54,12 @@ platform :ios do
     xcode_select("/Applications/Xcode.app")
     xcodes(version: "15.0.1", select_for_current_build_only: true)
     gym(
+      configuration: "Release",
+      codesigning_identity: "Apple Distribution",
       project: "Runner.xcodeproj",
       scheme: "Runner",
       skip_codesigning: true,
-      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID}"
+      xcargs: "CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=#{DEVELOPER_PORTAL_TEAM_ID} PROVISIONING_PROFILE_SPECIFIER=#{PROVISIONING_PROFILE_SPECIFIER}"
     )
     upload_to_testflight(
         api_key: api_key,
