@@ -11,8 +11,8 @@ workflows:
       cocoapods: default
     scripts:
       # - gem install bundler:2.2.27
-      - bundle install
-      - bundle exec fastlane beta
+      - cd ios && bundle install
+      - cd ios && bundle exec fastlane beta
     artifacts:
-      - ./*.ipa
-      - ./*.dSYM.zip
+      - ./ios/*.ipa
+      - ./ios/*.dSYM.zip
