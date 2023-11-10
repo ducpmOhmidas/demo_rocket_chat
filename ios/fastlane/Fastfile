@@ -38,7 +38,7 @@ platform :ios do
       in_house: false,
       is_key_content_base64: true
     )
-    increment_build_number(xcodeproj: "./Runner.xcodeproj")
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
     clean_build_artifacts
     match(
       git_url: "#{CER_GIT_URL}",
@@ -53,19 +53,8 @@ platform :ios do
     xcode_select("/Applications/Xcode.app")
     xcodes(version: "15.0.1", select_for_current_build_only: true)
     gym(
-      configuration: "Release",
-      workspace: "./Runner.xcworkspace",
+      project: "Runner.xcodeproj",
       scheme: "Runner",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-            DEVELOPER_APP_ID => PROVISIONING_PROFILE_SPECIFIER
-        },
-        signingStyle: "manual"
-      },
-      clean: true,
-      output_name: "app.ipa",       # specify the name of the .ipa file to generate (including file extension)
-      codesigning_identity: "Apple Distribution: MIDAS INC",
     )
     upload_to_testflight(
         api_key: api_key,
